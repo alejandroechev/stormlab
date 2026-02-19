@@ -1,0 +1,11 @@
+{
+  "name": "hydrocad-web",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @hydrocad/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "test:watch": "pnpm -r test:watch",
+    "lint": "pnpm -r lint"
+  }
+}
