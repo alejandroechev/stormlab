@@ -1,0 +1,75 @@
+{
+  "id": "example-project",
+  "name": "Example Detention Pond",
+  "description": "Simple subcatchment → detention pond → outlet example",
+  "nodes": [
+    {
+      "type": "subcatchment",
+      "id": "SC1",
+      "name": "North Basin",
+      "position": { "x": 0, "y": 0 },
+      "data": {
+        "id": "SC1",
+        "name": "North Basin",
+        "subAreas": [
+          { "description": "Residential 1/2 acre", "soilGroup": "B", "cn": 70, "area": 40 },
+          { "description": "Open space good", "soilGroup": "B", "cn": 61, "area": 30 },
+          { "description": "Impervious (roads)", "soilGroup": "D", "cn": 98, "area": 10 }
+        ],
+        "flowSegments": [],
+        "tcOverride": 0.5
+      }
+    },
+    {
+      "type": "pond",
+      "id": "P1",
+      "name": "Detention Pond",
+      "position": { "x": 1, "y": 0 },
+      "data": {
+        "stageStorage": [
+          { "stage": 100, "storage": 0 },
+          { "stage": 101, "storage": 4200 },
+          { "stage": 102, "storage": 9200 },
+          { "stage": 103, "storage": 15000 },
+          { "stage": 104, "storage": 21800 },
+          { "stage": 105, "storage": 29400 },
+          { "stage": 106, "storage": 38000 },
+          { "stage": 107, "storage": 47600 },
+          { "stage": 108, "storage": 58200 }
+        ],
+        "outlets": [
+          {
+            "type": "orifice",
+            "coefficient": 0.6,
+            "diameter": 1.0,
+            "centerElevation": 100.5
+          },
+          {
+            "type": "weir",
+            "subtype": "broad-crested",
+            "coefficient": 2.85,
+            "length": 8,
+            "crestElevation": 106
+          }
+        ],
+        "initialWSE": 100
+      }
+    },
+    {
+      "type": "junction",
+      "id": "OUT",
+      "name": "Outlet",
+      "position": { "x": 2, "y": 0 }
+    }
+  ],
+  "links": [
+    { "id": "L1", "from": "SC1", "to": "P1" },
+    { "id": "L2", "from": "P1", "to": "OUT" }
+  ],
+  "events": [
+    { "id": "2yr", "label": "2-Year Storm", "stormType": "II", "totalDepth": 3.2 },
+    { "id": "10yr", "label": "10-Year Storm", "stormType": "II", "totalDepth": 4.8 },
+    { "id": "25yr", "label": "25-Year Storm", "stormType": "II", "totalDepth": 6.0 },
+    { "id": "100yr", "label": "100-Year Storm", "stormType": "II", "totalDepth": 8.0 }
+  ]
+}

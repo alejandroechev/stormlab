@@ -12,3 +12,8 @@ export * from "./hydrology/subcatchment.js";
 export * from "./hydraulics/stage-storage.js";
 export * from "./hydraulics/outlet-structures.js";
 export * from "./hydraulics/pond-routing.js";
+
+// Model
+export * from "./model/project.js";
+export * from "./model/reach-routing.js";
+export * from "./model/system-router.js";
