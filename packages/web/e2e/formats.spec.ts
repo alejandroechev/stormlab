@@ -204,4 +204,94 @@ test.describe("File Format Roundtrip E2E", () => {
     await nodeGroups.first().click();
     await expect(page.getByText("Sub-Areas")).toBeVisible();
   });
+
+  test("HydroCAD .hcp roundtrip", async ({ page }) => {
+    // Export HydroCAD
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "↔ Import/Export" }).click();
+    const hcpRow = page.locator("text=HydroCAD").locator("..");
+    await hcpRow.getByRole("button", { name: "Export" }).click();
+    const download = await downloadPromise;
+    const exportPath = path.join(TEMP_DIR, "project.hcp");
+    await download.saveAs(exportPath);
+
+    // Verify .hcp file structure
+    const hcp = fs.readFileSync(exportPath, "utf-8");
+    expect(hcp).toContain("[HydroCAD]");
+    expect(hcp).toContain("[EVENT]");
+    expect(hcp).toContain("[NODE]");
+    expect(hcp).toContain("Type=Subcat");
+    expect(hcp).toContain("Type=Pond");
+    expect(hcp).toContain("North Basin");
+    expect(hcp).toContain("[AREA]");
+    expect(hcp).toContain("[DEVICE]");
+
+    // Verify event depths are in feet (not inches)
+    // 25-Year Storm is 6.0 inches = 0.5 feet
+    expect(hcp).toContain("StormDepth=0.5");
+
+    // Remember original node/link counts
+    const origStatusText = await page.locator(".status-bar").textContent();
+    const origNodeMatch = origStatusText!.match(/Nodes:\s*(\d+)/);
+    const origLinkMatch = origStatusText!.match(/Links:\s*(\d+)/);
+    const origNodeCount = parseInt(origNodeMatch![1]);
+    const origLinkCount = parseInt(origLinkMatch![1]);
+
+    // Import back into a new project
+    page.on("dialog", (d) => d.accept());
+    await page.getByRole("button", { name: "New" }).click();
+    await page.waitForTimeout(500);
+
+    const importChooserPromise = page.waitForEvent("filechooser");
+    await page.getByRole("button", { name: "↔ Import/Export" }).click();
+    const hcpRow2 = page.locator("text=HydroCAD").locator("..");
+    await hcpRow2.getByRole("button", { name: "Import" }).click();
+    const importChooser = await importChooserPromise;
+    await importChooser.setFiles(exportPath);
+
+    // Wait and verify node count matches
+    await page.waitForTimeout(500);
+    const nodeGroups = page.locator(".node-group");
+    const importedNodeCount = await nodeGroups.count();
+    expect(importedNodeCount).toBe(origNodeCount);
+
+    // Verify link count matches
+    const newStatusText = await page.locator(".status-bar").textContent();
+    const newLinkMatch = newStatusText!.match(/Links:\s*(\d+)/);
+    const importedLinkCount = parseInt(newLinkMatch![1]);
+    expect(importedLinkCount).toBe(origLinkCount);
+
+    // Verify subcatchment data survived — click North Basin using JS dispatch
+    await page.evaluate(() => {
+      const node = document.querySelector('.node-group');
+      if (node) node.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 }));
+    });
+    await page.waitForTimeout(300);
+
+    // Property panel should show subcatchment properties
+    const propPanel = page.locator(".property-panel");
+    const propContent = await propPanel.textContent();
+    expect(propContent).toContain("Sub-Areas");
+
+    // Verify events were imported
+    const eventSelector = page.locator(".event-selector");
+    await expect(eventSelector).toBeVisible();
+    const eventCount = await eventSelector.locator("option").count();
+    expect(eventCount).toBe(4);
+
+    // Run simulation to verify the project is functional
+    await page.getByRole("button", { name: "▶ Run Simulation" }).click();
+    await page.waitForTimeout(500);
+
+    // Click the pond node via JS dispatch
+    await page.evaluate(() => {
+      const nodes = document.querySelectorAll('.node-group');
+      if (nodes[1]) nodes[1].dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 }));
+    });
+    await page.waitForTimeout(300);
+    await expect(page.getByText("Results")).toBeVisible();
+    const peakFlow = await page.locator(".result-badge .value").first().textContent();
+    const peakVal = parseFloat(peakFlow!);
+    expect(peakVal).toBeGreaterThan(0);
+  });
 });
