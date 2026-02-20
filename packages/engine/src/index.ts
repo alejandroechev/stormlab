@@ -7,11 +7,13 @@ export * from "./hydrology/rainfall.js";
 export * from "./hydrology/time-of-concentration.js";
 export * from "./hydrology/unit-hydrograph.js";
 export * from "./hydrology/subcatchment.js";
+export * from "./hydrology/rational-method.js";
 
 // Hydraulics
 export * from "./hydraulics/stage-storage.js";
 export * from "./hydraulics/outlet-structures.js";
 export * from "./hydraulics/pond-routing.js";
+export * from "./hydraulics/culvert.js";
 
 // Model
 export * from "./model/project.js";
