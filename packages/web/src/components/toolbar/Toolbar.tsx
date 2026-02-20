@@ -15,7 +15,14 @@ export function Toolbar() {
   const activeEventId = useEditorStore((s) => s.activeEventId);
   const undo = useEditorStore((s) => s.undo);
   const redo = useEditorStore((s) => s.redo);
+  const theme = useEditorStore((s) => s.theme);
+  const toggleTheme = useEditorStore((s) => s.toggleTheme);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Apply theme on mount
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -139,12 +146,12 @@ export function Toolbar() {
           onChange={(e) => setActiveEvent(e.target.value)}
           style={{
             marginLeft: "auto",
-            background: "#16213e",
-            color: "#eee",
-            border: "1px solid #2a2a4a",
+            background: "var(--input-bg)",
+            color: "var(--text)",
+            border: "1px solid var(--border)",
             padding: "4px 8px",
-            borderRadius: 4,
-            fontSize: 13,
+            borderRadius: 5,
+            fontSize: 12,
           }}
         >
           {project.events.map((ev) => (
@@ -154,6 +161,14 @@ export function Toolbar() {
           ))}
         </select>
       )}
+
+      <button
+        className="theme-toggle"
+        onClick={toggleTheme}
+        title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+      >
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
 
       <input
         ref={fileInputRef}

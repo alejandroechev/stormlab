@@ -1,18 +1,61 @@
-:root {
-  --bg: #1a1a2e;
-  --surface: #16213e;
-  --panel: #0f3460;
-  --accent: #e94560;
-  --text: #eee;
-  --text-muted: #999;
-  --border: #2a2a4a;
-  --node-sub: #4a9eff;
+/* ──────────────── Light Theme (default) ──────────────── */
+:root, [data-theme="light"] {
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --panel: #f0f0f0;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --text-muted: #888;
+  --border: #e0e0e0;
+  --input-bg: #fff;
+  --canvas-bg: #fafafa;
+  --grid-color: #e8e8e8;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+  /* Diagram node colors — kept vivid in both themes */
+  --node-sub: #3b82f6;
   --node-pond: #22c55e;
   --node-reach: #f59e0b;
-  --node-junc: #a78bfa;
-  --link-color: #6b7280;
+  --node-junc: #8b5cf6;
+  --link-color: #94a3b8;
+  --node-label: #fff;
+  --node-type-label: rgba(255,255,255,0.6);
+  --port-fill: #fff;
+  --selected-stroke: #ef4444;
+  --selected-glow: rgba(239,68,68,0.4);
 }
 
+/* ──────────────── Dark Theme ──────────────── */
+[data-theme="dark"] {
+  --bg: #111;
+  --surface: #1a1a1a;
+  --panel: #222;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --text: #e5e5e5;
+  --text-secondary: #aaa;
+  --text-muted: #666;
+  --border: #333;
+  --input-bg: #2a2a2a;
+  --canvas-bg: #141414;
+  --grid-color: #1e1e1e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3);
+
+  --node-sub: #4a9eff;
+  --node-pond: #34d399;
+  --node-reach: #fbbf24;
+  --node-junc: #a78bfa;
+  --link-color: #64748b;
+  --node-label: #fff;
+  --node-type-label: rgba(255,255,255,0.5);
+  --port-fill: #fff;
+  --selected-stroke: #ef4444;
+  --selected-glow: rgba(239,68,68,0.5);
+}
+
+/* ──────────────── Reset ──────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -28,90 +71,141 @@ html, body, #root {
   color: var(--text);
 }
 
+/* ──────────────── Layout ──────────────── */
 .app-layout {
   display: grid;
   grid-template-columns: 200px 1fr 300px;
-  grid-template-rows: 48px 1fr 32px;
+  grid-template-rows: 44px 1fr 28px;
   height: 100vh;
   gap: 1px;
   background: var(--border);
 }
 
+/* ──────────────── Toolbar ──────────────── */
 .toolbar {
   grid-column: 1 / -1;
   background: var(--surface);
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  gap: 12px;
+  padding: 0 12px;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
 .toolbar h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-right: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 16px;
+  letter-spacing: -0.02em;
 }
 
 .toolbar button {
-  background: var(--panel);
-  color: var(--text);
+  background: transparent;
+  color: var(--text-secondary);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 6px 12px;
+  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
+  transition: all 0.15s;
 }
 
 .toolbar button:hover {
-  background: var(--accent);
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--text-muted);
 }
 
+.btn-primary {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover) !important;
+}
+
+.btn-danger {
+  background: transparent !important;
+  color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+.btn-danger:hover {
+  background: #dc2626 !important;
+  color: #fff !important;
+}
+
+.theme-toggle {
+  background: transparent !important;
+  border: none !important;
+  font-size: 16px !important;
+  padding: 4px 6px !important;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.theme-toggle:hover {
+  opacity: 1;
+  background: transparent !important;
+}
+
+/* ──────────────── Stencil Panel ──────────────── */
 .stencil-panel {
   background: var(--surface);
   padding: 12px;
   overflow-y: auto;
+  border-right: 1px solid var(--border);
 }
 
 .stencil-panel h3 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
   margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .stencil-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px;
-  margin-bottom: 4px;
+  padding: 7px 10px;
+  margin-bottom: 3px;
   border-radius: 6px;
   cursor: grab;
   background: var(--panel);
-  border: 1px solid var(--border);
-  font-size: 13px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
 }
 
 .stencil-item:hover {
-  border-color: var(--accent);
+  border-color: var(--border);
+  color: var(--text);
+  background: var(--input-bg);
 }
 
 .stencil-item .icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 700;
   color: #fff;
 }
 
+/* ──────────────── Diagram Canvas ──────────────── */
 .diagram-area {
-  background: var(--bg);
+  background: var(--canvas-bg);
   position: relative;
   overflow: hidden;
   cursor: grab;
@@ -126,13 +220,13 @@ html, body, #root {
   height: 100%;
 }
 
-/* SVG Node styles */
+/* ──────────────── SVG Nodes ──────────────── */
 .node-group {
   cursor: pointer;
 }
 
 .node-group:hover .node-body {
-  filter: brightness(1.2);
+  filter: brightness(1.1);
 }
 
 .node-body {
@@ -141,13 +235,13 @@ html, body, #root {
 }
 
 .node-body.selected {
-  stroke: var(--accent);
+  stroke: var(--selected-stroke);
   stroke-width: 3;
-  filter: drop-shadow(0 0 6px var(--accent));
+  filter: drop-shadow(0 0 6px var(--selected-glow));
 }
 
 .node-label {
-  fill: #fff;
+  fill: var(--node-label);
   font-size: 11px;
   font-family: inherit;
   text-anchor: middle;
@@ -156,7 +250,7 @@ html, body, #root {
 }
 
 .node-type-label {
-  fill: rgba(255,255,255,0.5);
+  fill: var(--node-type-label);
   font-size: 9px;
   font-family: inherit;
   text-anchor: middle;
@@ -173,7 +267,7 @@ html, body, #root {
   r: 7;
 }
 
-/* Link styles */
+/* ──────────────── SVG Links ──────────────── */
 .flow-link {
   stroke: var(--link-color);
   stroke-width: 2;
@@ -182,12 +276,12 @@ html, body, #root {
 }
 
 .flow-link:hover {
-  stroke: var(--accent);
+  stroke: var(--selected-stroke);
   stroke-width: 3;
 }
 
 .flow-link.selected {
-  stroke: var(--accent);
+  stroke: var(--selected-stroke);
   stroke-width: 3;
 }
 
@@ -195,56 +289,62 @@ html, body, #root {
   fill: var(--link-color);
 }
 
-/* Property panel */
+/* ──────────────── Property Panel ──────────────── */
 .property-panel {
   background: var(--surface);
   padding: 12px;
   overflow-y: auto;
+  border-left: 1px solid var(--border);
 }
 
 .property-panel h3 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .property-panel .empty {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
   margin-top: 40px;
 }
 
+/* ──────────────── Form Controls ──────────────── */
 .prop-group {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .prop-group label {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .prop-group input,
 .prop-group select {
   width: 100%;
-  background: var(--panel);
+  background: var(--input-bg);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 6px 8px;
-  font-size: 13px;
+  font-size: 12px;
+  transition: border-color 0.15s;
 }
 
 .prop-group input:focus,
 .prop-group select:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
 }
 
 .prop-row {
@@ -256,13 +356,14 @@ html, body, #root {
   flex: 1;
 }
 
+/* ──────────────── Result Badges ──────────────── */
 .result-badge {
   display: inline-block;
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 11px;
   margin-bottom: 4px;
   margin-right: 4px;
 }
@@ -272,28 +373,23 @@ html, body, #root {
   color: var(--accent);
 }
 
+/* ──────────────── Status Bar ──────────────── */
 .status-bar {
   grid-column: 1 / -1;
   background: var(--surface);
   display: flex;
   align-items: center;
   padding: 0 12px;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   gap: 16px;
+  border-top: 1px solid var(--border);
 }
 
-.btn-danger {
-  background: #dc2626 !important;
-}
-
-.btn-primary {
-  background: var(--accent) !important;
-}
-
+/* ──────────────── Sub-Areas Table ──────────────── */
 .sub-areas-table {
   width: 100%;
-  font-size: 12px;
+  font-size: 11px;
   border-collapse: collapse;
   margin-top: 4px;
 }
@@ -309,6 +405,7 @@ html, body, #root {
   background: var(--panel);
   color: var(--text-muted);
   font-weight: 500;
+  font-size: 10px;
 }
 
 .sub-areas-table input {
@@ -316,6 +413,13 @@ html, body, #root {
   background: transparent;
   border: none;
   color: var(--text);
-  font-size: 12px;
+  font-size: 11px;
   padding: 2px;
+}
+
+.sub-areas-table select {
+  background: transparent;
+  color: var(--text);
+  border: none;
+  font-size: 11px;
 }

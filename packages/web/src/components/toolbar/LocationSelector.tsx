@@ -35,9 +35,9 @@ export function LocationSelector() {
         value={selectedState}
         onChange={(e) => setSelectedState(e.target.value)}
         style={{
-          background: "#0f3460",
-          color: "#eee",
-          border: "1px solid #2a2a4a",
+          background: "var(--input-bg)",
+          color: "var(--text)",
+          border: "1px solid var(--border)",
           borderRadius: 4,
           padding: "4px 6px",
           fontSize: 12,
@@ -57,7 +57,7 @@ export function LocationSelector() {
           style={{
             fontSize: 11,
             padding: "4px 8px",
-            background: "#22c55e",
+            background: "var(--accent)",
             border: "none",
             borderRadius: 4,
             color: "#fff",

@@ -18,10 +18,10 @@ function snap(v: number): number {
 }
 
 const nodeColors: Record<string, string> = {
-  subcatchment: "#4a9eff",
-  pond: "#22c55e",
-  reach: "#f59e0b",
-  junction: "#a78bfa",
+  subcatchment: "var(--node-sub)",
+  pond: "var(--node-pond)",
+  reach: "var(--node-reach)",
+  junction: "var(--node-junc)",
 };
 
 const nodeIcons: Record<string, string> = {
@@ -141,9 +141,7 @@ function NodeShape({ node, warningCount }: { node: ProjectNode; warningCount: nu
         width={NODE_W}
         height={NODE_H}
         rx={8}
-        fill={color}
-        stroke={isSelected ? "#e94560" : color}
-        opacity={0.9}
+        style={{ fill: color, stroke: isSelected ? 'var(--selected-stroke)' : color, opacity: 0.9 }}
       />
       {/* Type icon */}
       <text
@@ -164,8 +162,7 @@ function NodeShape({ node, warningCount }: { node: ProjectNode; warningCount: nu
         cx={0}
         cy={-NODE_H / 2}
         r={5}
-        fill="#fff"
-        stroke={color}
+        style={{ fill: 'var(--port-fill)', stroke: color }}
         strokeWidth={2}
         onClick={onInputPortClick}
       />
@@ -175,8 +172,7 @@ function NodeShape({ node, warningCount }: { node: ProjectNode; warningCount: nu
         cx={0}
         cy={NODE_H / 2}
         r={5}
-        fill={linkSourceId === node.id ? "#e94560" : "#fff"}
-        stroke={color}
+        style={{ fill: linkSourceId === node.id ? 'var(--selected-stroke)' : 'var(--port-fill)', stroke: color }}
         strokeWidth={2}
         onClick={onPortClick}
       />
@@ -236,7 +232,7 @@ function LinkLine({ link }: { link: ProjectLink }) {
       <polygon
         className="link-arrow"
         points={`${x2 - 5},${y2 - 10} ${x2 + 5},${y2 - 10} ${x2},${y2 - 2}`}
-        fill={isSelected ? "#e94560" : "#6b7280"}
+        style={{ fill: isSelected ? 'var(--selected-stroke)' : 'var(--link-color)' }}
       />
     </g>
   );
@@ -410,7 +406,7 @@ export function DiagramCanvas() {
         {/* Grid pattern */}
         <defs>
           <pattern id="grid" width={GRID} height={GRID} patternUnits="userSpaceOnUse">
-            <path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke="#1e1e3a" strokeWidth="0.5" />
+            <path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" style={{ stroke: 'var(--grid-color)' }} strokeWidth="0.5" />
           </pattern>
         </defs>
         <g transform={`scale(${zoom}) translate(${pan.x}, ${pan.y})`}>

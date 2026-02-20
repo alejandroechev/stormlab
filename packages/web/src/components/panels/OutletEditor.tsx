@@ -32,7 +32,7 @@ function OutletRow({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div style={{ border: "1px solid #2a2a4a", borderRadius: 4, padding: 8, marginBottom: 6, background: "#0f3460" }}>
+    <div style={{ border: "1px solid var(--border)", borderRadius: 4, padding: 8, marginBottom: 6, background: "var(--input-bg)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }} onClick={() => setExpanded(!expanded)}>
         <span style={{ fontSize: 12 }}>
           {expanded ? "▼" : "▶"} {index + 1}. {label}
@@ -97,7 +97,7 @@ function OutletRow({
               <select
                 value={outlet.subtype}
                 onChange={(e) => onUpdate(index, { ...outlet, subtype: e.target.value as "broad-crested" | "sharp-crested" })}
-                style={{ width: "100%", background: "#16213e", color: "#eee", border: "1px solid #2a2a4a", borderRadius: 4, padding: "4px 6px", fontSize: 12 }}
+                style={{ width: "100%", background: "var(--input-bg)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: 4, padding: "4px 6px", fontSize: 12 }}
               >
                 <option value="broad-crested">Broad-Crested</option>
                 <option value="sharp-crested">Sharp-Crested</option>
@@ -196,7 +196,7 @@ export function OutletEditor({ outlets, onChange }: OutletEditorProps) {
         <select
           value={newType}
           onChange={(e) => setNewType(e.target.value as NewOutletType)}
-          style={{ flex: 1, background: "#0f3460", color: "#eee", border: "1px solid #2a2a4a", borderRadius: 4, padding: "4px 6px", fontSize: 11 }}
+          style={{ flex: 1, background: "var(--input-bg)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: 4, padding: "4px 6px", fontSize: 11 }}
         >
           <option value="orifice">Orifice</option>
           <option value="weir">Weir</option>
@@ -204,7 +204,7 @@ export function OutletEditor({ outlets, onChange }: OutletEditorProps) {
         </select>
         <button
           onClick={addOutlet}
-          style={{ padding: "4px 10px", fontSize: 11, background: "#22c55e", border: "none", borderRadius: 4, color: "#fff", cursor: "pointer" }}
+          style={{ padding: "4px 10px", fontSize: 11, background: "var(--accent)", border: "none", borderRadius: 4, color: "#fff", cursor: "pointer" }}
         >
           + Add
         </button>

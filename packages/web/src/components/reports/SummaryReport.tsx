@@ -23,7 +23,7 @@ export function SummaryReport() {
           fontSize: 12,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
-          color: "#999",
+          color: "var(--text-muted)",
           marginBottom: 8,
         }}
       >
@@ -46,9 +46,9 @@ export function SummaryReport() {
                   key={h}
                   style={{
                     padding: "4px 6px",
-                    borderBottom: "1px solid #2a2a4a",
+                    borderBottom: "1px solid var(--border)",
                     textAlign: "left",
-                    color: "#999",
+                    color: "var(--text-muted)",
                     fontWeight: 500,
                   }}
                 >
@@ -72,38 +72,38 @@ export function SummaryReport() {
                       : "transparent",
                 }}
               >
-                <td style={{ padding: "4px 6px", borderBottom: "1px solid #1a1a2e" }}>
+                <td style={{ padding: "4px 6px", borderBottom: "1px solid var(--border)" }}>
                   {node.name}
                 </td>
                 <td
                   style={{
                     padding: "4px 6px",
-                    borderBottom: "1px solid #1a1a2e",
-                    color: "#999",
+                    borderBottom: "1px solid var(--border)",
+                    color: "var(--text-muted)",
                   }}
                 >
                   {node.type}
                 </td>
-                <td style={{ padding: "4px 6px", borderBottom: "1px solid #1a1a2e" }}>
+                <td style={{ padding: "4px 6px", borderBottom: "1px solid var(--border)" }}>
                   {r.peakInflow !== undefined ? r.peakInflow.toFixed(1) : "—"}
                 </td>
                 <td
                   style={{
                     padding: "4px 6px",
-                    borderBottom: "1px solid #1a1a2e",
+                    borderBottom: "1px solid var(--border)",
                     fontWeight: 600,
-                    color: "#e94560",
+                    color: "var(--accent)",
                   }}
                 >
                   {r.peakOutflow.toFixed(1)}
                 </td>
-                <td style={{ padding: "4px 6px", borderBottom: "1px solid #1a1a2e" }}>
+                <td style={{ padding: "4px 6px", borderBottom: "1px solid var(--border)" }}>
                   {r.timeToPeakOutflow.toFixed(2)}
                 </td>
-                <td style={{ padding: "4px 6px", borderBottom: "1px solid #1a1a2e" }}>
+                <td style={{ padding: "4px 6px", borderBottom: "1px solid var(--border)" }}>
                   {r.totalVolume.toFixed(2)}
                 </td>
-                <td style={{ padding: "4px 6px", borderBottom: "1px solid #1a1a2e" }}>
+                <td style={{ padding: "4px 6px", borderBottom: "1px solid var(--border)" }}>
                   {r.peakStage !== undefined ? r.peakStage.toFixed(2) : "—"}
                 </td>
               </tr>

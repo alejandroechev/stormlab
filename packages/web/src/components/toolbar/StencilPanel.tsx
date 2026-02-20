@@ -30,7 +30,7 @@ export function StencilPanel() {
         </div>
       ))}
       <h3 style={{ marginTop: 24 }}>Instructions</h3>
-      <p style={{ fontSize: 12, color: "#999", lineHeight: 1.5 }}>
+      <p style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.5 }}>
         Drag components onto the canvas. Click the bottom port of a node, then
         click the top port of another to create a flow link.
       </p>

@@ -11,6 +11,7 @@ import {
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
+import { useEditorStore } from "../../store/editor-store";
 
 type PondShape = "prismatic" | "conical" | "cylindrical" | "custom";
 
@@ -25,6 +26,11 @@ export function PondGeometryEditor({
   baseElevation,
   onChange,
 }: PondGeometryEditorProps) {
+  // Subscribe to theme so Recharts re-renders with correct resolved colors
+  useEditorStore((s) => s.theme);
+  const _cs = getComputedStyle(document.documentElement);
+  const cv = (v: string) => _cs.getPropertyValue(v).trim();
+
   const [shape, setShape] = useState<PondShape>("prismatic");
   const [length, setLength] = useState(100);
   const [width, setWidth] = useState(50);
@@ -63,7 +69,7 @@ export function PondGeometryEditor({
         <select
           value={shape}
           onChange={(e) => setShape(e.target.value as PondShape)}
-          style={{ width: "100%", background: "#0f3460", color: "#eee", border: "1px solid #2a2a4a", borderRadius: 4, padding: "4px 6px" }}
+          style={{ width: "100%", background: "var(--input-bg)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: 4, padding: "4px 6px" }}
         >
           <option value="prismatic">Rectangular / Trapezoidal</option>
           <option value="conical">Conical</option>
@@ -113,7 +119,7 @@ export function PondGeometryEditor({
       {shape !== "custom" && (
         <button
           onClick={generate}
-          style={{ marginTop: 8, marginBottom: 12, padding: "4px 12px", fontSize: 12, background: "#e94560", border: "none", borderRadius: 4, color: "#fff", cursor: "pointer" }}
+          style={{ marginTop: 8, marginBottom: 12, padding: "4px 12px", fontSize: 12, background: "var(--accent)", border: "none", borderRadius: 4, color: "#fff", cursor: "pointer" }}
         >
           Generate Stage-Storage
         </button>
@@ -122,28 +128,28 @@ export function PondGeometryEditor({
       {/* Stage-Storage Chart */}
       {chartData.length > 1 && (
         <div style={{ marginTop: 8 }}>
-          <label style={{ fontSize: 10, color: "#999", textTransform: "uppercase" }}>
+          <label style={{ fontSize: 10, color: "var(--text-muted)", textTransform: "uppercase" }}>
             Stage-Storage Curve ({chartData.length} points)
           </label>
           <ResponsiveContainer width="100%" height={140}>
             <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
+              <CartesianGrid strokeDasharray="3 3" stroke={cv('--border')} />
               <XAxis
                 dataKey="storage"
-                tick={{ fontSize: 9, fill: "#999" }}
-                stroke="#2a2a4a"
-                label={{ value: "Storage (cu ft)", position: "bottom", offset: -2, fill: "#999", fontSize: 9 }}
+                tick={{ fontSize: 9, fill: cv('--text-muted') }}
+                stroke={cv('--border')}
+                label={{ value: "Storage (cu ft)", position: "bottom", offset: -2, fill: cv('--text-muted'), fontSize: 9 }}
               />
               <YAxis
                 dataKey="stage"
-                tick={{ fontSize: 9, fill: "#999" }}
-                stroke="#2a2a4a"
-                label={{ value: "Stage (ft)", angle: -90, position: "insideLeft", fill: "#999", fontSize: 9 }}
+                tick={{ fontSize: 9, fill: cv('--text-muted') }}
+                stroke={cv('--border')}
+                label={{ value: "Stage (ft)", angle: -90, position: "insideLeft", fill: cv('--text-muted'), fontSize: 9 }}
               />
               <Tooltip
-                contentStyle={{ background: "#16213e", border: "1px solid #2a2a4a", fontSize: 11 }}
+                contentStyle={{ background: cv('--surface'), border: `1px solid ${cv('--border')}`, fontSize: 11 }}
               />
-              <Line type="monotone" dataKey="stage" stroke="#22c55e" dot={false} strokeWidth={1.5} />
+              <Line type="monotone" dataKey="stage" stroke={cv('--node-pond')} dot={false} strokeWidth={1.5} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -151,7 +157,7 @@ export function PondGeometryEditor({
 
       {/* Numeric summary */}
       {chartData.length > 1 && (
-        <div style={{ fontSize: 11, color: "#999", marginTop: 4 }}>
+        <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>
           Max storage: {chartData[chartData.length - 1].storage.toLocaleString()} cu ft
           ({(chartData[chartData.length - 1].storage / 43560).toFixed(2)} ac-ft)
         </div>

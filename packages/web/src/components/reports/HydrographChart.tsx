@@ -18,6 +18,10 @@ export function HydrographChart({ nodeId }: { nodeId: string }) {
   const results = useEditorStore((s) => s.results);
   const activeEventId = useEditorStore((s) => s.activeEventId);
   const nodes = useEditorStore((s) => s.project.nodes);
+  // Subscribe to theme so Recharts re-renders with correct resolved colors
+  useEditorStore((s) => s.theme);
+  const _cs = getComputedStyle(document.documentElement);
+  const cv = (v: string) => _cs.getPropertyValue(v).trim();
 
   if (!activeEventId) return null;
   const eventResults = results.get(activeEventId);
@@ -39,38 +43,38 @@ export function HydrographChart({ nodeId }: { nodeId: string }) {
 
   return (
     <div style={{ marginTop: 12 }}>
-      <h4 style={{ fontSize: 12, color: "#999", marginBottom: 4 }}>
+      <h4 style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 4 }}>
         {node?.name ?? nodeId} — Outflow Hydrograph
       </h4>
       <ResponsiveContainer width="100%" height={180}>
         <LineChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
+          <CartesianGrid strokeDasharray="3 3" stroke={cv('--border')} />
           <XAxis
             dataKey="time"
-            label={{ value: "Time (hr)", position: "bottom", offset: -2, fill: "#999", fontSize: 10 }}
-            tick={{ fontSize: 10, fill: "#999" }}
-            stroke="#2a2a4a"
+            label={{ value: "Time (hr)", position: "bottom", offset: -2, fill: cv('--text-muted'), fontSize: 10 }}
+            tick={{ fontSize: 10, fill: cv('--text-muted') }}
+            stroke={cv('--border')}
           />
           <YAxis
-            label={{ value: "Flow (cfs)", angle: -90, position: "insideLeft", fill: "#999", fontSize: 10 }}
-            tick={{ fontSize: 10, fill: "#999" }}
-            stroke="#2a2a4a"
+            label={{ value: "Flow (cfs)", angle: -90, position: "insideLeft", fill: cv('--text-muted'), fontSize: 10 }}
+            tick={{ fontSize: 10, fill: cv('--text-muted') }}
+            stroke={cv('--border')}
           />
           <Tooltip
-            contentStyle={{ background: "#16213e", border: "1px solid #2a2a4a", fontSize: 12 }}
+            contentStyle={{ background: cv('--surface'), border: `1px solid ${cv('--border')}`, fontSize: 12 }}
             labelFormatter={(v) => `${v} hr`}
           />
           <Line
             type="monotone"
             dataKey="flow"
-            stroke="#e94560"
+            stroke={cv('--selected-stroke')}
             dot={false}
             strokeWidth={1.5}
             name="Outflow"
           />
           <ReferenceLine
             y={nodeResult.peakOutflow}
-            stroke="#e94560"
+            stroke={cv('--selected-stroke')}
             strokeDasharray="3 3"
             strokeWidth={0.5}
           />

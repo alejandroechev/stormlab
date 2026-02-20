@@ -27,6 +27,8 @@ export interface EditorState {
   /** Undo/redo history */
   history: Project[];
   historyIndex: number;
+  /** UI theme */
+  theme: "light" | "dark";
 
   // Actions
   addNode: (node: ProjectNode) => void;
@@ -46,6 +48,7 @@ export interface EditorState {
   setProject: (project: Project) => void;
   setResults: (eventId: string, results: Map<string, NodeResult>) => void;
   setActiveEvent: (eventId: string) => void;
+  toggleTheme: () => void;
 
   undo: () => void;
   redo: () => void;
@@ -86,6 +89,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   activeEventId: null,
   history: [],
   historyIndex: -1,
+  theme: (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light") as "light" | "dark",
 
   addNode: (node) =>
     set((s) => ({
@@ -192,6 +196,13 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }),
 
   setActiveEvent: (eventId) => set({ activeEventId: eventId }),
+
+  toggleTheme: () =>
+    set((s) => {
+      const newTheme = s.theme === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      return { theme: newTheme };
+    }),
 
   undo: () =>
     set((s) => {
