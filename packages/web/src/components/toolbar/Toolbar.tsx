@@ -4,6 +4,7 @@
 import { useCallback, useRef, useEffect } from "react";
 import { useEditorStore } from "../../store/editor-store";
 import { runSimulation, validateProject, type Project } from "@hydrocad/engine";
+import { openPrintReport } from "../reports/PrintReport";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -123,6 +124,9 @@ export function Toolbar() {
       <button onClick={redo} title="Redo (Ctrl+Y)">↪</button>
       <button className="btn-primary" onClick={onRun}>
         ▶ Run Simulation
+      </button>
+      <button onClick={openPrintReport} title="Generate printable report">
+        📄 Report
       </button>
 
       {activeEventId && (
