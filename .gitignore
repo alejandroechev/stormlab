@@ -3,5 +3,6 @@ dist/
 .vite/
 *.tsbuildinfo
 screenshots/
+test-results/
 .env
 .env.local
