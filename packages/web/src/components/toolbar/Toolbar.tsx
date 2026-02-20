@@ -6,6 +6,7 @@ import { useEditorStore } from "../../store/editor-store";
 import { runSimulation, validateProject, type Project } from "@stormlab/engine";
 import { openPrintReport } from "../reports/PrintReport";
 import { LocationSelector } from "./LocationSelector";
+import { ImportExportMenu } from "./ImportExportMenu";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -128,6 +129,7 @@ export function Toolbar() {
       <button onClick={onNew}>New</button>
       <button onClick={onLoad}>Open</button>
       <button onClick={onSave}>Save</button>
+      <ImportExportMenu />
       <button onClick={undo} title="Undo (Ctrl+Z)">↩</button>
       <button onClick={redo} title="Redo (Ctrl+Y)">↪</button>
       <button className="btn-primary" onClick={onRun}>
