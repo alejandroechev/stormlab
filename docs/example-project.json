@@ -7,7 +7,7 @@
       "type": "subcatchment",
       "id": "SC1",
       "name": "North Basin",
-      "position": { "x": 0, "y": 0 },
+      "position": { "x": 400, "y": 100 },
       "data": {
         "id": "SC1",
         "name": "North Basin",
@@ -24,9 +24,9 @@
       "type": "pond",
       "id": "P1",
       "name": "Detention Pond",
-      "position": { "x": 1, "y": 0 },
+      "position": { "x": 400, "y": 260 },
       "data": {
-        "stageStorage": [
+        "stageStorage":[
           { "stage": 100, "storage": 0 },
           { "stage": 101, "storage": 4200 },
           { "stage": 102, "storage": 9200 },
@@ -59,7 +59,7 @@
       "type": "junction",
       "id": "OUT",
       "name": "Outlet",
-      "position": { "x": 2, "y": 0 }
+      "position": { "x": 400, "y": 420 }
     }
   ],
   "links": [
