@@ -1,5 +1,5 @@
 {
-  "name": "@hydrocad/web",
+  "name": "@stormlab/web",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -12,7 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@hydrocad/engine": "workspace:*",
+    "@stormlab/engine": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.7.0",

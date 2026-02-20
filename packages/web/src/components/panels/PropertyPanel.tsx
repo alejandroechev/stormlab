@@ -2,7 +2,7 @@
  * Property Panel — edit selected node properties.
  */
 import { useEditorStore } from "../../store/editor-store";
-import type { ProjectNode } from "@hydrocad/engine";
+import type { ProjectNode } from "@stormlab/engine";
 import { type ChangeEvent, useCallback } from "react";
 import { HydrographChart } from "../reports/HydrographChart";
 import { PondGeometryEditor } from "./PondGeometryEditor";

@@ -2,7 +2,7 @@
  * Outlet Structure Editor — add/remove/configure outlet devices.
  */
 import { useState, useCallback } from "react";
-import type { OutletStructure } from "@hydrocad/engine";
+import type { OutletStructure } from "@stormlab/engine";
 
 interface OutletEditorProps {
   outlets: OutletStructure[];

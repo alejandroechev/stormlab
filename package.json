@@ -1,8 +1,8 @@
 {
-  "name": "hydrocad-web",
+  "name": "stormlab",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @hydrocad/web dev",
+    "dev": "pnpm --filter @stormlab/web dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "test:watch": "pnpm -r test:watch",

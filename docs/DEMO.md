@@ -1,12 +1,12 @@
-# HydroCAD Web — Demo Walkthrough
+# StormLab — Demo Walkthrough
 
-A visual tour of HydroCAD Web, a browser-based stormwater modeling tool that implements the USDA/NRCS TR-55 hydrology methods with an interactive routing diagram editor.
+A visual tour of StormLab, a browser-based stormwater modeling tool that implements the USDA/NRCS TR-55 hydrology methods with an interactive routing diagram editor.
 
 ---
 
 ## 1. Empty Workspace
 
-When you first open HydroCAD Web, you see the three-panel layout:
+When you first open StormLab, you see the three-panel layout:
 - **Left:** Component stencil palette (Subcatchment, Pond, Reach, Junction)
 - **Center:** SVG routing diagram canvas with grid background
 - **Right:** Property editor panel

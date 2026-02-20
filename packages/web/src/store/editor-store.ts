@@ -8,7 +8,7 @@ import type {
   ProjectLink,
   RainfallEventDef,
   NodeResult,
-} from "@hydrocad/engine";
+} from "@stormlab/engine";
 
 export interface EditorState {
   project: Project;

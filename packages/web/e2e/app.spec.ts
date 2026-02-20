@@ -17,13 +17,13 @@ async function loadExampleProject(page: import("@playwright/test").Page) {
   await fileChooser.setFiles(EXAMPLE_PROJECT);
 }
 
-test.describe("HydroCAD Web E2E", () => {
+test.describe("StormLab E2E", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
   test("renders the app layout", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "HydroCAD Web" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "StormLab" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Components" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Properties" })).toBeVisible();
     await expect(page.getByText("Nodes: 0")).toBeVisible();

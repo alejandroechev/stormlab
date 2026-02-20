@@ -1,7 +1,7 @@
 /**
  * Inline validation warnings shown on diagram nodes.
  */
-import type { Project, ProjectNode } from "@hydrocad/engine";
+import type { Project, ProjectNode } from "@stormlab/engine";
 
 export interface ValidationWarning {
   nodeId: string;

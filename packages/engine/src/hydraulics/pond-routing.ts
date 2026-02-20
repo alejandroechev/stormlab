@@ -2,7 +2,7 @@
  * Modified Puls (Storage-Indication) Pond Routing
  *
  * Routes an inflow hydrograph through a pond using the storage-indication method.
- * This is the standard method used by TR-20 and HydroCAD.
+ * This is the standard method used by TR-20 and similar stormwater modeling tools.
  */
 
 import {

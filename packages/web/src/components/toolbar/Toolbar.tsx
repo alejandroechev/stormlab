@@ -3,7 +3,7 @@
  */
 import { useCallback, useRef, useEffect } from "react";
 import { useEditorStore } from "../../store/editor-store";
-import { runSimulation, validateProject, type Project } from "@hydrocad/engine";
+import { runSimulation, validateProject, type Project } from "@stormlab/engine";
 import { openPrintReport } from "../reports/PrintReport";
 import { LocationSelector } from "./LocationSelector";
 
@@ -124,7 +124,7 @@ export function Toolbar() {
 
   return (
     <div className="toolbar">
-      <h1>HydroCAD Web</h1>
+      <h1>StormLab</h1>
       <button onClick={onNew}>New</button>
       <button onClick={onLoad}>Open</button>
       <button onClick={onSave}>Save</button>

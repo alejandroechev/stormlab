@@ -1,4 +1,4 @@
-// @hydrocad/engine — Stormwater hydrology & hydraulics engine
+// @stormlab/engine — Stormwater hydrology & hydraulics engine
 
 // Hydrology
 export * from "./hydrology/runoff.js";

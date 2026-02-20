@@ -22,7 +22,7 @@ importers:
 
   packages/web:
     dependencies:
-      '@hydrocad/engine':
+      '@stormlab/engine':
         specifier: workspace:*
         version: link:../engine
       react:

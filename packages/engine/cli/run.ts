@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HydroCAD Engine CLI — runs simulations from project JSON files.
+ * StormLab Engine CLI — runs simulations from project JSON files.
  *
  * Usage: npx ts-node cli/run.ts <project.json> [--event <eventId>] [--json]
  */
@@ -15,10 +15,10 @@ function main() {
 
   if (args.length === 0 || args.includes("--help")) {
     console.log(`
-HydroCAD Engine CLI
+StormLab Engine CLI
 
 Usage:
-  hydrocad-cli <project.json> [options]
+  stormlab-cli <project.json> [options]
 
 Options:
   --event <id>   Run a specific rainfall event (default: first event)

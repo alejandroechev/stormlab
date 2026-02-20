@@ -2,7 +2,7 @@
  * Location selector — auto-populate rainfall events from NOAA Atlas 14 state data.
  */
 import { useState, useCallback } from "react";
-import { getAvailableStates, generateEventsForState } from "@hydrocad/engine";
+import { getAvailableStates, generateEventsForState } from "@stormlab/engine";
 import { useEditorStore } from "../../store/editor-store";
 
 export function LocationSelector() {

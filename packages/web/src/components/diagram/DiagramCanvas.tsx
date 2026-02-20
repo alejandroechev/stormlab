@@ -7,7 +7,7 @@
 import { useRef, useState, useCallback, useMemo, type MouseEvent } from "react";
 import { useEditorStore } from "../../store/editor-store";
 import { getNodeWarnings } from "../../hooks/useValidation";
-import type { ProjectNode, ProjectLink } from "@hydrocad/engine";
+import type { ProjectNode, ProjectLink } from "@stormlab/engine";
 
 const NODE_W = 120;
 const NODE_H = 60;

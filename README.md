@@ -1,10 +1,10 @@
-# HydroCAD Web
+# StormLab
 
-A web-based stormwater modeling tool inspired by [HydroCAD](https://www.hydrocad.net/). Built with TypeScript, React, and SVG — runs entirely in the browser with no backend required.
+A web-based stormwater modeling tool built with TypeScript, React, and SVG — runs entirely in the browser with no backend required.
 
 ## Features
 
-### Hydrology Engine (`@hydrocad/engine`)
+### Hydrology Engine (`@stormlab/engine`)
 - **SCS Runoff Equation** (TR-55 Chapter 2) — Curve Number method for rainfall-runoff
 - **Rainfall Distributions** — SCS Type I, IA, II, III cumulative mass curves
 - **Curve Number Lookup** — composite CN weighting for mixed land use
@@ -23,7 +23,7 @@ A web-based stormwater modeling tool inspired by [HydroCAD](https://www.hydrocad
 - **Multi-event support** — 2-year, 10-year, 25-year, 100-year storms
 - **CLI Runner** — run simulations from JSON project files
 
-### Web UI (`@hydrocad/web`)
+### Web UI (`@stormlab/web`)
 - **SVG Routing Diagram** — pan/zoom canvas with grid background
 - **Drag-and-Drop Stencil** — add nodes from the component palette
 - **Port-based Link Drawing** — click output→input ports to create flow connections
@@ -54,7 +54,7 @@ cd packages/engine && npx tsx cli/run.ts ../../docs/example-project.json --event
 ## Project Structure
 
 ```
-hydrocad-web/
+stormlab/
 ├── packages/
 │   ├── engine/                 # Pure TS hydrology/hydraulics engine
 │   │   ├── src/
