@@ -24,6 +24,9 @@ export interface EditorState {
   results: Map<string, Map<string, NodeResult>>;
   /** Active event ID for display */
   activeEventId: string | null;
+  /** Undo/redo history */
+  history: Project[];
+  historyIndex: number;
 
   // Actions
   addNode: (node: ProjectNode) => void;
@@ -43,6 +46,11 @@ export interface EditorState {
   setProject: (project: Project) => void;
   setResults: (eventId: string, results: Map<string, NodeResult>) => void;
   setActiveEvent: (eventId: string) => void;
+
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 }
 
 function emptyProject(): Project {
@@ -58,7 +66,16 @@ function emptyProject(): Project {
   };
 }
 
-export const useEditorStore = create<EditorState>((set) => ({
+const MAX_HISTORY = 50;
+
+function pushHistory(s: EditorState): Partial<EditorState> {
+  const newHistory = s.history.slice(0, s.historyIndex + 1);
+  newHistory.push(structuredClone(s.project));
+  if (newHistory.length > MAX_HISTORY) newHistory.shift();
+  return { history: newHistory, historyIndex: newHistory.length - 1 };
+}
+
+export const useEditorStore = create<EditorState>((set, get) => ({
   project: emptyProject(),
   selectedNodeId: null,
   selectedLinkId: null,
@@ -67,9 +84,12 @@ export const useEditorStore = create<EditorState>((set) => ({
   zoom: 1,
   results: new Map(),
   activeEventId: null,
+  history: [],
+  historyIndex: -1,
 
   addNode: (node) =>
     set((s) => ({
+      ...pushHistory(s),
       project: { ...s.project, nodes: [...s.project.nodes, node] },
     })),
 
@@ -85,6 +105,7 @@ export const useEditorStore = create<EditorState>((set) => ({
 
   removeNode: (id) =>
     set((s) => ({
+      ...pushHistory(s),
       project: {
         ...s.project,
         nodes: s.project.nodes.filter((n) => n.id !== id),
@@ -110,12 +131,14 @@ export const useEditorStore = create<EditorState>((set) => ({
 
   addLink: (link) =>
     set((s) => ({
+      ...pushHistory(s),
       project: { ...s.project, links: [...s.project.links, link] },
       linkSourceId: null,
     })),
 
   removeLink: (id) =>
     set((s) => ({
+      ...pushHistory(s),
       project: {
         ...s.project,
         links: s.project.links.filter((l) => l.id !== id),
@@ -169,4 +192,27 @@ export const useEditorStore = create<EditorState>((set) => ({
     }),
 
   setActiveEvent: (eventId) => set({ activeEventId: eventId }),
+
+  undo: () =>
+    set((s) => {
+      if (s.historyIndex < 0) return s;
+      const project = structuredClone(s.history[s.historyIndex]);
+      return { project, historyIndex: s.historyIndex - 1 };
+    }),
+
+  redo: () =>
+    set((s) => {
+      if (s.historyIndex >= s.history.length - 1) return s;
+      const nextIndex = s.historyIndex + 1;
+      // The project *after* the snapshot at nextIndex was applied
+      // We need the state that was saved when that action happened
+      if (nextIndex + 1 < s.history.length) {
+        const project = structuredClone(s.history[nextIndex + 1]);
+        return { project, historyIndex: nextIndex + 1 };
+      }
+      return s;
+    }),
+
+  canUndo: () => get().historyIndex >= 0,
+  canRedo: () => get().historyIndex < get().history.length - 1,
 }));

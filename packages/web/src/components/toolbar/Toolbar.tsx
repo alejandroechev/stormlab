@@ -1,9 +1,9 @@
 /**
- * Toolbar — project actions (run, save, load, new).
+ * Toolbar — project actions (run, save, load, new, undo, redo).
  */
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { useEditorStore } from "../../store/editor-store";
-import { runSimulation, type Project } from "@hydrocad/engine";
+import { runSimulation, validateProject, type Project } from "@hydrocad/engine";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -11,7 +11,25 @@ export function Toolbar() {
   const setResults = useEditorStore((s) => s.setResults);
   const setActiveEvent = useEditorStore((s) => s.setActiveEvent);
   const activeEventId = useEditorStore((s) => s.activeEventId);
+  const undo = useEditorStore((s) => s.undo);
+  const redo = useEditorStore((s) => s.redo);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [undo, redo]);
 
   const onRun = useCallback(() => {
     if (project.events.length === 0) {
@@ -20,6 +38,13 @@ export function Toolbar() {
     }
     if (project.nodes.length === 0) {
       alert("No nodes in the project");
+      return;
+    }
+
+    // Validate before running
+    const errors = validateProject(project);
+    if (errors.length > 0) {
+      alert("Validation errors:\n" + errors.map((e) => `• ${e}`).join("\n"));
       return;
     }
 
@@ -94,6 +119,8 @@ export function Toolbar() {
       <button onClick={onNew}>New</button>
       <button onClick={onLoad}>Open</button>
       <button onClick={onSave}>Save</button>
+      <button onClick={undo} title="Undo (Ctrl+Z)">↩</button>
+      <button onClick={redo} title="Redo (Ctrl+Y)">↪</button>
       <button className="btn-primary" onClick={onRun}>
         ▶ Run Simulation
       </button>
