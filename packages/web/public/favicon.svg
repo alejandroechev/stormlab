@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <!-- Water droplet -->
+  <path d="M32 4 C32 4 12 28 12 40 C12 51 21 58 32 58 C43 58 52 51 52 40 C52 28 32 4 32 4Z" fill="url(#g)"/>
+  <!-- Wave inside droplet -->
+  <path d="M18 42 Q24 36 32 42 Q40 48 46 42" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+</svg>
