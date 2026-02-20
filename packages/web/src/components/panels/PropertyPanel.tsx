@@ -4,6 +4,7 @@
 import { useEditorStore } from "../../store/editor-store";
 import type { ProjectNode } from "@hydrocad/engine";
 import { type ChangeEvent, useCallback } from "react";
+import { HydrographChart } from "../reports/HydrographChart";
 
 function SubcatchmentProps({ node }: { node: ProjectNode & { type: "subcatchment" } }) {
   const updateNode = useEditorStore((s) => s.updateNode);
@@ -309,6 +310,7 @@ function NodeResultBadges({ nodeId }: { nodeId: string }) {
           Peak Stage: <span className="value">{r.peakStage.toFixed(2)} ft</span>
         </div>
       )}
+      <HydrographChart nodeId={nodeId} />
     </div>
   );
 }
