@@ -1,0 +1,73 @@
+/**
+ * Location selector — auto-populate rainfall events from NOAA Atlas 14 state data.
+ */
+import { useState, useCallback } from "react";
+import { getAvailableStates, generateEventsForState } from "@hydrocad/engine";
+import { useEditorStore } from "../../store/editor-store";
+
+export function LocationSelector() {
+  const project = useEditorStore((s) => s.project);
+  const setProject = useEditorStore((s) => s.setProject);
+  const [selectedState, setSelectedState] = useState("");
+  const states = getAvailableStates();
+
+  const onApply = useCallback(() => {
+    if (!selectedState) return;
+    const events = generateEventsForState(selectedState);
+    if (events.length === 0) return;
+
+    const confirmed =
+      project.events.length <= 1 ||
+      confirm(
+        "Replace current rainfall events with NOAA Atlas 14 data for this state?",
+      );
+    if (!confirmed) return;
+
+    setProject({
+      ...project,
+      events,
+    });
+  }, [selectedState, project, setProject]);
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+      <select
+        value={selectedState}
+        onChange={(e) => setSelectedState(e.target.value)}
+        style={{
+          background: "#0f3460",
+          color: "#eee",
+          border: "1px solid #2a2a4a",
+          borderRadius: 4,
+          padding: "4px 6px",
+          fontSize: 12,
+          width: 60,
+        }}
+      >
+        <option value="">State</option>
+        {states.map((s) => (
+          <option key={s.code} value={s.code}>
+            {s.code}
+          </option>
+        ))}
+      </select>
+      {selectedState && (
+        <button
+          onClick={onApply}
+          style={{
+            fontSize: 11,
+            padding: "4px 8px",
+            background: "#22c55e",
+            border: "none",
+            borderRadius: 4,
+            color: "#fff",
+            cursor: "pointer",
+          }}
+          title="Apply NOAA Atlas 14 rainfall data for this state"
+        >
+          Apply
+        </button>
+      )}
+    </div>
+  );
+}

@@ -8,6 +8,7 @@ export * from "./hydrology/time-of-concentration.js";
 export * from "./hydrology/unit-hydrograph.js";
 export * from "./hydrology/subcatchment.js";
 export * from "./hydrology/rational-method.js";
+export * from "./hydrology/noaa-rainfall.js";
 
 // Hydraulics
 export * from "./hydraulics/stage-storage.js";

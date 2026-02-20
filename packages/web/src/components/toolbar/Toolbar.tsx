@@ -5,6 +5,7 @@ import { useCallback, useRef, useEffect } from "react";
 import { useEditorStore } from "../../store/editor-store";
 import { runSimulation, validateProject, type Project } from "@hydrocad/engine";
 import { openPrintReport } from "../reports/PrintReport";
+import { LocationSelector } from "./LocationSelector";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -129,8 +130,11 @@ export function Toolbar() {
         📄 Report
       </button>
 
+      <LocationSelector />
+
       {activeEventId && (
         <select
+          className="event-selector"
           value={activeEventId}
           onChange={(e) => setActiveEvent(e.target.value)}
           style={{
