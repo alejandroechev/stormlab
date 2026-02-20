@@ -20,3 +20,4 @@ export * from "./hydraulics/culvert.js";
 export * from "./model/project.js";
 export * from "./model/reach-routing.js";
 export * from "./model/system-router.js";
+export * from "./model/sensitivity.js";

@@ -29,6 +29,9 @@ export interface EditorState {
   historyIndex: number;
   /** UI theme */
   theme: "light" | "dark";
+  /** Pre/Post comparison: baseline project + results */
+  baselineProject: Project | null;
+  baselineResults: Map<string, Map<string, NodeResult>>;
 
   // Actions
   addNode: (node: ProjectNode) => void;
@@ -49,6 +52,10 @@ export interface EditorState {
   setResults: (eventId: string, results: Map<string, NodeResult>) => void;
   setActiveEvent: (eventId: string) => void;
   toggleTheme: () => void;
+
+  /** Save current project+results as baseline for pre/post comparison */
+  saveAsBaseline: () => void;
+  clearBaseline: () => void;
 
   undo: () => void;
   redo: () => void;
@@ -90,6 +97,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   history: [],
   historyIndex: -1,
   theme: (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light") as "light" | "dark",
+  baselineProject: null,
+  baselineResults: new Map(),
 
   addNode: (node) =>
     set((s) => ({
@@ -203,6 +212,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       document.documentElement.setAttribute("data-theme", newTheme);
       return { theme: newTheme };
     }),
+
+  saveAsBaseline: () =>
+    set((s) => ({
+      baselineProject: structuredClone(s.project),
+      baselineResults: new Map(
+        Array.from(s.results.entries()).map(([k, v]) => [k, new Map(v)]),
+      ),
+    })),
+
+  clearBaseline: () =>
+    set({ baselineProject: null, baselineResults: new Map() }),
 
   undo: () =>
     set((s) => {
