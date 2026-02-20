@@ -4,8 +4,9 @@
  * Renders nodes and links as SVG with pan/zoom, drag-to-move,
  * and port-based link creation.
  */
-import { useRef, useState, useCallback, type MouseEvent } from "react";
+import { useRef, useState, useCallback, useMemo, type MouseEvent } from "react";
 import { useEditorStore } from "../../store/editor-store";
+import { getNodeWarnings } from "../../hooks/useValidation";
 import type { ProjectNode, ProjectLink } from "@hydrocad/engine";
 
 const NODE_W = 120;
@@ -30,7 +31,7 @@ const nodeIcons: Record<string, string> = {
   junction: "J",
 };
 
-function NodeShape({ node }: { node: ProjectNode }) {
+function NodeShape({ node, warningCount }: { node: ProjectNode; warningCount: number }) {
   const selectedId = useEditorStore((s) => s.selectedNodeId);
   const selectNode = useEditorStore((s) => s.selectNode);
   const moveNode = useEditorStore((s) => s.moveNode);
@@ -179,6 +180,31 @@ function NodeShape({ node }: { node: ProjectNode }) {
         strokeWidth={2}
         onClick={onPortClick}
       />
+      {/* Warning badge */}
+      {warningCount > 0 && (
+        <>
+          <circle
+            cx={NODE_W / 2 - 4}
+            cy={-NODE_H / 2 + 4}
+            r={8}
+            fill="#f59e0b"
+            stroke="#1a1a2e"
+            strokeWidth={2}
+          />
+          <text
+            x={NODE_W / 2 - 4}
+            y={-NODE_H / 2 + 5}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="#1a1a2e"
+            fontSize={9}
+            fontWeight="bold"
+            pointerEvents="none"
+          >
+            {warningCount > 9 ? "!" : warningCount}
+          </text>
+        </>
+      )}
     </g>
   );
 }
@@ -217,8 +243,9 @@ function LinkLine({ link }: { link: ProjectLink }) {
 }
 
 export function DiagramCanvas() {
-  const nodes = useEditorStore((s) => s.project.nodes);
-  const links = useEditorStore((s) => s.project.links);
+  const project = useEditorStore((s) => s.project);
+  const nodes = project.nodes;
+  const links = project.links;
   const pan = useEditorStore((s) => s.pan);
   const zoom = useEditorStore((s) => s.zoom);
   const setPan = useEditorStore((s) => s.setPan);
@@ -226,6 +253,16 @@ export function DiagramCanvas() {
   const selectNode = useEditorStore((s) => s.selectNode);
   const startLinkFrom = useEditorStore((s) => s.startLinkFrom);
   const addNode = useEditorStore((s) => s.addNode);
+
+  // Compute validation warnings
+  const warnings = useMemo(() => getNodeWarnings(project), [project]);
+  const warningsByNode = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const w of warnings) {
+      map.set(w.nodeId, (map.get(w.nodeId) ?? 0) + 1);
+    }
+    return map;
+  }, [warnings]);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const [panning, setPanning] = useState(false);
@@ -384,7 +421,7 @@ export function DiagramCanvas() {
           ))}
           {/* Nodes on top */}
           {nodes.map((node) => (
-            <NodeShape key={node.id} node={node} />
+            <NodeShape key={node.id} node={node} warningCount={warningsByNode.get(node.id) ?? 0} />
           ))}
         </g>
       </svg>

@@ -5,6 +5,8 @@ import { useEditorStore } from "../../store/editor-store";
 import type { ProjectNode } from "@hydrocad/engine";
 import { type ChangeEvent, useCallback } from "react";
 import { HydrographChart } from "../reports/HydrographChart";
+import { PondGeometryEditor } from "./PondGeometryEditor";
+import { OutletEditor } from "./OutletEditor";
 
 function SubcatchmentProps({ node }: { node: ProjectNode & { type: "subcatchment" } }) {
   const updateNode = useEditorStore((s) => s.updateNode);
@@ -176,16 +178,27 @@ function PondProps({ node }: { node: ProjectNode & { type: "pond" } }) {
         />
       </div>
       <div className="prop-group">
-        <label>Stage-Storage Points</label>
-        <span style={{ fontSize: 12, color: "#999" }}>
-          {node.data.stageStorage.length} points defined
-        </span>
+        <label>Stage-Storage</label>
+        <PondGeometryEditor
+          stageStorage={node.data.stageStorage}
+          baseElevation={node.data.initialWSE}
+          onChange={(curve) =>
+            updateNode(node.id, {
+              data: { ...node.data, stageStorage: curve },
+            } as Partial<ProjectNode>)
+          }
+        />
       </div>
       <div className="prop-group">
         <label>Outlet Structures</label>
-        <span style={{ fontSize: 12, color: "#999" }}>
-          {node.data.outlets.length} outlet(s) defined
-        </span>
+        <OutletEditor
+          outlets={node.data.outlets}
+          onChange={(outlets) =>
+            updateNode(node.id, {
+              data: { ...node.data, outlets },
+            } as Partial<ProjectNode>)
+          }
+        />
       </div>
     </>
   );

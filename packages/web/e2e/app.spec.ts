@@ -95,7 +95,7 @@ test.describe("HydroCAD Web E2E", () => {
     await expect(page.getByText("Links: 2")).toBeVisible();
 
     // Event selector should be visible with multiple events
-    const eventSelect = page.locator("select");
+    const eventSelect = page.locator(".toolbar select");
     await expect(eventSelect).toBeVisible();
     await expect(eventSelect.locator("option")).toHaveCount(4);
   });
@@ -128,7 +128,7 @@ test.describe("HydroCAD Web E2E", () => {
     const val2yr = await peakText2yr.textContent();
 
     // Switch to 100-year
-    await page.locator("select").selectOption("100yr");
+    await page.locator(".toolbar select").selectOption("100yr");
 
     // Peak should be different (higher)
     const val100yr = await peakText2yr.textContent();
