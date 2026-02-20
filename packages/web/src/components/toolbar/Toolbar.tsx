@@ -7,6 +7,8 @@ import { runSimulation, validateProject, type Project } from "@stormlab/engine";
 import { openPrintReport } from "../reports/PrintReport";
 import { LocationSelector } from "./LocationSelector";
 import { ImportExportMenu } from "./ImportExportMenu";
+import { FeedbackButton } from "./FeedbackButton";
+import { trackEvent } from "../../analytics";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -64,6 +66,7 @@ export function Toolbar() {
         setResults(event.id, result.nodeResults);
       }
       setActiveEvent(project.events[0].id);
+      trackEvent({ name: "run_simulation", data: { nodes: project.nodes.length, events: project.events.length } });
     } catch (err: any) {
       alert(`Simulation error: ${err.message}`);
     }
@@ -147,7 +150,6 @@ export function Toolbar() {
           value={activeEventId}
           onChange={(e) => setActiveEvent(e.target.value)}
           style={{
-            marginLeft: "auto",
             background: "var(--input-bg)",
             color: "var(--text)",
             border: "1px solid var(--border)",
@@ -164,6 +166,8 @@ export function Toolbar() {
         </select>
       )}
 
+      <div style={{ marginLeft: "auto" }} />
+      <FeedbackButton />
       <button
         className="theme-toggle"
         onClick={toggleTheme}

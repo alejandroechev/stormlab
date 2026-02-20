@@ -227,23 +227,25 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   undo: () =>
     set((s) => {
       if (s.historyIndex < 0) return s;
-      const project = structuredClone(s.history[s.historyIndex]);
-      return { project, historyIndex: s.historyIndex - 1 };
+      // Save current project so redo can restore it
+      const newHistory = [...s.history];
+      if (newHistory.length <= s.historyIndex + 1) {
+        newHistory.push(structuredClone(s.project));
+      } else {
+        newHistory[s.historyIndex + 1] = structuredClone(s.project);
+      }
+      const project = structuredClone(newHistory[s.historyIndex]);
+      return { project, historyIndex: s.historyIndex - 1, history: newHistory };
     }),
 
   redo: () =>
     set((s) => {
-      if (s.historyIndex >= s.history.length - 1) return s;
-      const nextIndex = s.historyIndex + 1;
-      // The project *after* the snapshot at nextIndex was applied
-      // We need the state that was saved when that action happened
-      if (nextIndex + 1 < s.history.length) {
-        const project = structuredClone(s.history[nextIndex + 1]);
-        return { project, historyIndex: nextIndex + 1 };
-      }
-      return s;
+      const target = s.historyIndex + 2;
+      if (target >= s.history.length) return s;
+      const project = structuredClone(s.history[target]);
+      return { project, historyIndex: s.historyIndex + 1 };
     }),
 
   canUndo: () => get().historyIndex >= 0,
-  canRedo: () => get().historyIndex < get().history.length - 1,
+  canRedo: () => get().historyIndex + 2 < get().history.length,
 }));

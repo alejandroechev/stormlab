@@ -153,6 +153,28 @@ html, body, #root {
   background: transparent !important;
 }
 
+/* ──────────────── Feedback Button ──────────────── */
+.feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.feedback-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--panel);
+}
+
 /* ──────────────── Stencil Panel ──────────────── */
 .stencil-panel {
   background: var(--surface);

@@ -6,4 +6,8 @@ export default defineConfig({
   server: {
     port: 1420,
   },
+  test: {
+    exclude: ["e2e/**", "node_modules/**"],
+    passWithNoTests: true,
+  },
 });

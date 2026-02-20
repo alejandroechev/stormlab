@@ -29,6 +29,16 @@ export function LocationSelector() {
     });
   }, [selectedState, project, setProject]);
 
+  const onReset = useCallback(() => {
+    setSelectedState("");
+    const defaultEvent = { id: "25yr", label: "25-Year Storm", stormType: "II" as const, totalDepth: 6.0 };
+    const confirmed =
+      project.events.length <= 1 ||
+      confirm("Reset to default rainfall event?");
+    if (!confirmed) return;
+    setProject({ ...project, events: [defaultEvent] });
+  }, [project, setProject]);
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
       <select
@@ -41,7 +51,7 @@ export function LocationSelector() {
           borderRadius: 4,
           padding: "4px 6px",
           fontSize: 12,
-          width: 60,
+          width: 80,
         }}
       >
         <option value="">State</option>
@@ -66,6 +76,23 @@ export function LocationSelector() {
           title="Apply NOAA Atlas 14 rainfall data for this state"
         >
           Apply
+        </button>
+      )}
+      {project.events.length > 1 && (
+        <button
+          onClick={onReset}
+          style={{
+            fontSize: 11,
+            padding: "4px 8px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 4,
+            color: "var(--text)",
+            cursor: "pointer",
+          }}
+          title="Reset to default single event"
+        >
+          ✕
         </button>
       )}
     </div>
