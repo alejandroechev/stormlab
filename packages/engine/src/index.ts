@@ -27,3 +27,4 @@ export * from "./formats/csv.js";
 export * from "./formats/swmm.js";
 export * from "./formats/hechms.js";
 export * from "./formats/geojson.js";
+export * from "./formats/hydrocad.js";

@@ -14,11 +14,14 @@ import {
   exportHECHMS,
   importGeoJSON,
   exportGeoJSON,
+  importHydroCAD,
+  exportHydroCAD,
 } from "@stormlab/engine";
 
 const formats = [
   { id: "csv-sub", label: "CSV — Subcatchments", ext: ".csv", hasImport: true, hasExport: true },
   { id: "csv-results", label: "CSV — Results", ext: ".csv", hasImport: false, hasExport: true },
+  { id: "hydrocad", label: "HydroCAD (.hcp)", ext: ".hcp", hasImport: true, hasExport: true },
   { id: "swmm", label: "EPA SWMM (.inp)", ext: ".inp", hasImport: true, hasExport: true },
   { id: "hechms", label: "HEC-HMS (.basin)", ext: ".basin", hasImport: true, hasExport: true },
   { id: "geojson", label: "GeoJSON", ext: ".geojson", hasImport: true, hasExport: true },
@@ -55,6 +58,9 @@ export function ImportExportMenu() {
             break;
           case "geojson":
             setProject(importGeoJSON(text));
+            break;
+          case "hydrocad":
+            setProject(importHydroCAD(text));
             break;
         }
         setOpen(false);
@@ -94,6 +100,10 @@ export function ImportExportMenu() {
           content = exportGeoJSON(project);
           filename = `${project.name}.geojson`;
           mime = "application/geo+json";
+          break;
+        case "hydrocad":
+          content = exportHydroCAD(project);
+          filename = `${project.name}.hcp`;
           break;
         default:
           return;
@@ -225,7 +235,7 @@ export function ImportExportMenu() {
       <input
         ref={fileRef}
         type="file"
-        accept=".csv,.inp,.basin,.met,.geojson,.json"
+        accept=".csv,.inp,.basin,.met,.geojson,.json,.hcp,.hcp.txt"
         style={{ display: "none" }}
         onChange={onFileChange}
       />
