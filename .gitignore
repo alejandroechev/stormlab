@@ -6,3 +6,4 @@ screenshots/
 test-results/
 .env
 .env.local
+.vercel
