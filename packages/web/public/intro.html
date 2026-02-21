@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StormLab — Introduction to Stormwater Modeling</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #555;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --border: #e2e8f0;
+    --card-bg: #f8fafc;
+    --code-bg: #f1f5f9;
+    --heading: #0f172a;
+    --hero-bg: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent-light: #1e3a5f;
+      --border: #334155;
+      --card-bg: #1e293b;
+      --code-bg: #1e293b;
+      --heading: #f1f5f9;
+      --hero-bg: linear-gradient(135deg, #0c1929 0%, #1e3a5f 100%);
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .hero {
+    background: var(--hero-bg);
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px 50px;
+  }
+  .hero h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+  .hero p { font-size: 1.25rem; opacity: 0.9; margin-top: 8px; }
+  .back-link {
+    display: inline-block;
+    margin: 20px 0 0;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back-link:hover { color: #fff; text-decoration: underline; }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  h2 {
+    color: var(--heading);
+    font-size: 1.6rem;
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+  }
+  h3 {
+    color: var(--heading);
+    font-size: 1.15rem;
+    margin: 28px 0 10px;
+  }
+  p { margin: 12px 0; }
+  ul, ol { margin: 12px 0 12px 24px; }
+  li { margin: 6px 0; }
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+  }
+  .equation {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 6px;
+    font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+    font-size: 0.95rem;
+    overflow-x: auto;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .glossary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .glossary-table th, .glossary-table td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .glossary-table th {
+    background: var(--card-bg);
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .glossary-table td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--accent);
+  }
+  .step-list { counter-reset: steps; list-style: none; margin-left: 0; }
+  .step-list li {
+    counter-increment: steps;
+    padding: 12px 16px 12px 52px;
+    position: relative;
+    margin: 8px 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    background: var(--accent);
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .ref-list { list-style: none; margin-left: 0; }
+  .ref-list li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .ref-list li:last-child { border-bottom: none; }
+  a { color: var(--accent); }
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .container { padding: 24px 16px 60px; }
+    h2 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <a href="/" class="back-link">← Back to StormLab</a>
+  <h1>StormLab</h1>
+  <p>Free Stormwater Modeling</p>
+</div>
+
+<div class="container">
+
+<!-- 1. What is Stormwater Modeling? -->
+<h2>What is Stormwater Modeling?</h2>
+<p>When rain falls on natural landscapes — forests, grasslands, and undisturbed soils — much of it soaks into the ground. Urbanization replaces these pervious surfaces with roads, rooftops, and parking lots, dramatically increasing the volume and speed of surface runoff.</p>
+<p>This extra runoff causes flooding, erosion, and water quality degradation downstream. To manage these impacts, engineers design <strong>detention and retention ponds</strong>, culverts, and drainage networks that temporarily hold stormwater and release it at controlled rates.</p>
+<p>Stormwater modeling is the process of predicting how rainfall moves through a watershed — from the moment it hits the ground to when it exits at a downstream outfall. Regulatory agencies (municipal, state, and federal) typically require developers to demonstrate that post-development peak runoff does not exceed pre-development rates for specified design storms.</p>
+<p>StormLab provides a free, browser-based tool for performing these calculations using the industry-standard SCS/TR-55 methodology.</p>
+
+<!-- 2. The SCS/TR-55 Method -->
+<h2>The SCS/TR-55 Method</h2>
+<p>The <strong>USDA Technical Release 55</strong> (TR-55), published by the Natural Resources Conservation Service (formerly Soil Conservation Service), is the most widely used method for estimating runoff from small urban watersheds in the United States.</p>
+
+<h3>Curve Number (CN)</h3>
+<p>The Curve Number is a dimensionless parameter (0–100) that represents the runoff potential of a land surface. It depends on:</p>
+<ul>
+  <li><strong>Hydrologic Soil Group</strong> — A (sandy, high infiltration), B (moderate), C (slow), D (clay, very slow)</li>
+  <li><strong>Land Use / Cover</strong> — impervious surfaces, lawns, woods, agriculture</li>
+  <li><strong>Antecedent Moisture Condition</strong> — dry (AMC I), normal (AMC II), wet (AMC III)</li>
+</ul>
+<p>Higher CN values produce more runoff. A parking lot might have CN = 98, while dense forest on sandy soil could be CN = 30.</p>
+
+<h3>The Runoff Equation</h3>
+<p>The SCS runoff equation computes the depth of direct runoff <em>Q</em> from a rainfall depth <em>P</em>:</p>
+<div class="equation">
+  S = 1000/CN − 10<br>
+  Q = (P − 0.2S)² / (P + 0.8S)&emsp;when P &gt; 0.2S<br>
+  Q = 0&emsp;when P ≤ 0.2S
+</div>
+<p>Here, <em>S</em> is the potential maximum soil retention (inches), and <em>0.2S</em> is the initial abstraction — rainfall absorbed before runoff begins. The equation is elegantly simple yet remarkably effective for predicting total runoff volume.</p>
+
+<!-- 3. Rainfall Distributions -->
+<h2>Rainfall Distributions</h2>
+<p>A design storm is not just a total depth — it also has a <em>temporal distribution</em> that describes how rainfall intensity varies over the storm duration (typically 24 hours). The SCS defined four standard distributions based on regional climate patterns:</p>
+
+<div class="card">
+  <ul>
+    <li><strong>Type I</strong> — Pacific maritime climate (coastal California, Oregon, Washington). Moderate, steady rainfall.</li>
+    <li><strong>Type IA</strong> — Pacific Northwest interior. Least intense of the four types.</li>
+    <li><strong>Type II</strong> — Most of the continental United States east of the Rockies. Intense peak rainfall; the most commonly used distribution.</li>
+    <li><strong>Type III</strong> — Gulf of Mexico and Atlantic coastal areas south of Cape Hatteras. Tropical-influenced storms with high total depths.</li>
+  </ul>
+</div>
+<p>Each distribution concentrates most rainfall intensity near the midpoint of the 24-hour storm, producing a characteristic peak that drives the design of drainage systems. The choice of distribution significantly affects the shape and magnitude of the resulting runoff hydrograph.</p>
+
+<!-- 4. Time of Concentration -->
+<h2>Time of Concentration (Tc)</h2>
+<p>The <strong>time of concentration</strong> is the time required for runoff to travel from the hydraulically most distant point in a watershed to the outlet. It is the single most important timing parameter in hydrology — it determines the peak discharge rate.</p>
+
+<h3>Flow Segments</h3>
+<p>Tc is computed as the sum of travel times through up to three flow segments:</p>
+<div class="card">
+  <ul>
+    <li><strong>Sheet Flow</strong> — thin, uniform flow over the land surface (max 300 ft). Depends on Manning's roughness, slope, and a 2-year 24-hour rainfall depth.</li>
+    <li><strong>Shallow Concentrated Flow</strong> — runoff converges into swales and ditches. Velocity depends on slope and surface type (paved vs. unpaved).</li>
+    <li><strong>Channel Flow</strong> — defined channels with known geometry. Velocity via Manning's equation.</li>
+  </ul>
+</div>
+<p>A shorter Tc produces a higher, sharper peak on the runoff hydrograph. Urbanization shortens Tc by replacing rough surfaces (grass, forest) with smooth impervious surfaces, which is a primary reason peak flows increase after development.</p>
+
+<!-- 5. Unit Hydrograph -->
+<h2>Unit Hydrograph</h2>
+<p>The <strong>SCS dimensionless unit hydrograph</strong> converts total runoff volume into a time-varying flow rate (a hydrograph). The method assumes that 1 inch of runoff from a watershed with a given Tc will produce a hydrograph of a specific shape.</p>
+<p>Key relationships:</p>
+<div class="equation">
+  Time to peak: Tp = 0.6 × Tc + D/2<br>
+  Peak discharge: qp = 484 × A / Tp<br>
+  (A = area in mi², Tp in hours, qp in cfs)
+</div>
+<p>The dimensionless hydrograph shape (q/qp vs. t/Tp) is then scaled by the actual runoff depth and watershed area to produce the final runoff hydrograph. Shorter Tc values produce taller, narrower hydrographs — more runoff in less time.</p>
+
+<!-- 6. Pond Routing -->
+<h2>Pond Routing (Modified Puls Method)</h2>
+<p>Once the runoff hydrograph arrives at a detention pond, we need to determine how much the pond attenuates (reduces) the peak flow. This is done using the <strong>Modified Puls</strong> (or level-pool) routing method.</p>
+
+<h3>How It Works</h3>
+<p>The method uses the continuity equation in discrete time steps:</p>
+<div class="equation">
+  (I₁ + I₂)/2 − (O₁ + O₂)/2 = ΔS/Δt
+</div>
+<p>where <em>I</em> = inflow, <em>O</em> = outflow, <em>S</em> = storage, and <em>Δt</em> = time step. At each step, the method iterates to find the water surface elevation that satisfies both the storage-indication curve and the stage-discharge relationship.</p>
+
+<h3>Stage-Storage-Discharge</h3>
+<p>Two relationships define pond behavior:</p>
+<ul>
+  <li><strong>Stage-Storage</strong> — how pond volume varies with water depth (determined by pond geometry)</li>
+  <li><strong>Stage-Discharge</strong> — how outflow rate varies with water depth (determined by outlet structures)</li>
+</ul>
+<p>The result is an outflow hydrograph that is lower and wider than the inflow hydrograph — the peak is <em>attenuated</em> and the flow is spread over a longer time. This is the fundamental purpose of detention ponds.</p>
+
+<!-- 7. Outlet Structures -->
+<h2>Outlet Structures</h2>
+<p>Outlet structures control the rate at which water leaves a detention pond. Different structure types produce different stage-discharge relationships:</p>
+
+<div class="card">
+  <h3>Orifice</h3>
+  <p>A circular or rectangular opening that restricts flow. Discharge follows:</p>
+  <div class="equation">Q = C × A × √(2gH)</div>
+  <p>where <em>C</em> is the discharge coefficient (~0.61), <em>A</em> is the orifice area, and <em>H</em> is the head above the orifice center. Orifices provide controlled, predictable release rates.</p>
+</div>
+
+<div class="card">
+  <h3>Rectangular Weir</h3>
+  <p>Water flows over a horizontal crest. Used for emergency spillways and primary overflow:</p>
+  <div class="equation">Q = C × L × H^(3/2)</div>
+  <p>where <em>L</em> is the weir length and <em>H</em> is the head above the crest. The exponent 3/2 means weir flow increases rapidly with head.</p>
+</div>
+
+<div class="card">
+  <h3>V-Notch Weir</h3>
+  <p>A triangular notch that is very sensitive to low flows — ideal for measuring small discharges:</p>
+  <div class="equation">Q = C × tan(θ/2) × H^(5/2)</div>
+  <p>The 5/2 exponent makes V-notch weirs highly responsive to changes in head.</p>
+</div>
+
+<p>Real pond outlets often combine multiple structures — for example, a low orifice for the 2-year storm, a higher weir for the 10-year storm, and an emergency spillway for the 100-year storm.</p>
+
+<!-- 8. DAG-Based Network -->
+<h2>DAG-Based Network</h2>
+<p>StormLab models drainage systems as a <strong>directed acyclic graph</strong> (DAG) where water flows from upstream nodes to downstream nodes through connecting links. This architecture mirrors how real drainage systems work.</p>
+
+<h3>Node Types</h3>
+<div class="card">
+  <ul>
+    <li><strong>Subcatchment</strong> — generates runoff from rainfall (area, CN, Tc)</li>
+    <li><strong>Pond</strong> — stores and attenuates flow (stage-storage-discharge)</li>
+    <li><strong>Reach</strong> — conveys flow between nodes (Manning's equation, channel geometry)</li>
+    <li><strong>Junction</strong> — combines flows from multiple upstream nodes</li>
+    <li><strong>Outfall</strong> — the final discharge point of the system</li>
+  </ul>
+</div>
+<p>Links connect nodes and define the flow direction. StormLab automatically resolves the computation order using topological sorting — ensuring that every upstream node is computed before the nodes it feeds into.</p>
+
+<!-- 9. How to Use StormLab -->
+<h2>How to Use StormLab</h2>
+<ol class="step-list">
+  <li><strong>Add Nodes</strong> — Drag subcatchments, ponds, reaches, and junctions from the stencil palette onto the canvas.</li>
+  <li><strong>Connect Links</strong> — Click an output port on one node and drag to an input port on another to create a flow link.</li>
+  <li><strong>Set Properties</strong> — Select each node and configure its properties in the right panel (area, CN, Tc for subcatchments; stage-storage for ponds; outlet structures; etc.).</li>
+  <li><strong>Select Rainfall</strong> — Choose a design storm event (e.g., 25-year Type II, 6.0 inches) or configure custom events.</li>
+  <li><strong>Run Simulation</strong> — Click the <strong>▶ Run Simulation</strong> button. StormLab computes runoff, routes flows through the network, and displays results on each node.</li>
+  <li><strong>View Results</strong> — Click any node to see its hydrograph, peak flow, total volume, and timing. Use the Report button for a printable summary.</li>
+</ol>
+
+<!-- 10. Glossary -->
+<h2>Glossary</h2>
+<table class="glossary-table">
+  <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+  <tbody>
+    <tr><td>CN</td><td>Curve Number — dimensionless runoff index (0–100) based on soil and land use</td></tr>
+    <tr><td>Tc</td><td>Time of Concentration — travel time from the most distant point to the outlet</td></tr>
+    <tr><td>HW</td><td>Headwater — the depth of water above a culvert or structure invert</td></tr>
+    <tr><td>Hydrograph</td><td>A graph of flow rate (cfs) versus time; the fundamental output of hydrologic modeling</td></tr>
+    <tr><td>Routing</td><td>The process of computing how an inflow hydrograph is transformed as it passes through a storage or channel element</td></tr>
+    <tr><td>Detention</td><td>Temporary storage of stormwater for controlled release (pond drains after the storm)</td></tr>
+    <tr><td>Retention</td><td>Permanent storage of stormwater (pond holds water indefinitely, relies on infiltration/evaporation)</td></tr>
+    <tr><td>Peak Attenuation</td><td>Reduction of peak flow rate as a hydrograph passes through a detention facility</td></tr>
+    <tr><td>Stage-Storage</td><td>Relationship between water surface elevation (stage) and stored volume in a pond</td></tr>
+    <tr><td>Stage-Discharge</td><td>Relationship between water surface elevation and outflow rate through outlet structures</td></tr>
+    <tr><td>Design Storm</td><td>A synthetic rainfall event of specified frequency (e.g., 25-year) and duration used for engineering design</td></tr>
+    <tr><td>DAG</td><td>Directed Acyclic Graph — a network where flow moves in one direction with no loops</td></tr>
+    <tr><td>Initial Abstraction</td><td>Rainfall absorbed before runoff begins (Ia = 0.2S in the SCS method)</td></tr>
+    <tr><td>cfs</td><td>Cubic feet per second — standard unit of volumetric flow rate in US hydrology</td></tr>
+    <tr><td>Manning's n</td><td>Roughness coefficient used in Manning's equation for open channel flow</td></tr>
+  </tbody>
+</table>
+
+<!-- 11. References -->
+<h2>References</h2>
+<ul class="ref-list">
+  <li><strong>USDA TR-55</strong> — <em>Urban Hydrology for Small Watersheds</em>, Technical Release 55, Natural Resources Conservation Service, June 1986. The definitive public-domain reference for SCS hydrology. <a href="https://www.nrcs.usda.gov/sites/default/files/2023-10/TR55.pdf" target="_blank">PDF</a></li>
+  <li><strong>NOAA Atlas 14</strong> — <em>Precipitation-Frequency Atlas of the United States</em>, National Oceanic and Atmospheric Administration. Provides design storm depths for any location in the US. <a href="https://hdsc.nws.noaa.gov/pfds/" target="_blank">PFDS website</a></li>
+  <li><strong>FHWA HDS-5</strong> — <em>Hydraulic Design of Highway Culverts</em>, Hydraulic Design Series No. 5, Federal Highway Administration. Public-domain reference for culvert hydraulics. <a href="https://www.fhwa.dot.gov/engineering/hydraulics/pubs/12026/hif12026.pdf" target="_blank">PDF</a></li>
+  <li><strong>SCS NEH Part 630</strong> — <em>National Engineering Handbook, Chapter 16: Hydrographs</em>. Details the dimensionless unit hydrograph method.</li>
+  <li><strong>Chow, V.T.</strong> — <em>Open-Channel Hydraulics</em>, McGraw-Hill, 1959. Classic reference for Manning's equation and channel flow.</li>
+</ul>
+
+</div>
+
+<footer>
+  StormLab — Free, open-source stormwater modeling. No installation required.
+</footer>
+
+</body>
+</html>

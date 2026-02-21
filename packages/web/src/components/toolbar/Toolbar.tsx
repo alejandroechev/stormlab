@@ -169,6 +169,12 @@ export function Toolbar() {
       <div style={{ marginLeft: "auto" }} />
       <FeedbackButton />
       <button
+        onClick={() => window.open('/intro.html', '_blank')}
+        title="Introduction to stormwater modeling"
+      >
+        📖 Guide
+      </button>
+      <button
         className="theme-toggle"
         onClick={toggleTheme}
         title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
