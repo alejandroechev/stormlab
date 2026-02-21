@@ -9,6 +9,7 @@ import { LocationSelector } from "./LocationSelector";
 import { ImportExportMenu } from "./ImportExportMenu";
 import { FeedbackButton } from "./FeedbackButton";
 import { trackEvent } from "../../analytics";
+import { sampleProjects } from "../../samples";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -131,6 +132,33 @@ export function Toolbar() {
       <h1>StormLab</h1>
       <button onClick={onNew}>New</button>
       <button onClick={onLoad}>Open</button>
+      <select
+        title="Load a sample project"
+        value=""
+        onChange={(e) => {
+          const sample = sampleProjects.find((s) => s.id === e.target.value);
+          if (sample) {
+            setProject(structuredClone(sample.data));
+            trackEvent({ name: "load_sample", data: { sample: sample.id } });
+          }
+        }}
+        style={{
+          background: "var(--input-bg)",
+          color: "var(--text)",
+          border: "1px solid var(--border)",
+          padding: "4px 8px",
+          borderRadius: 5,
+          fontSize: 12,
+          cursor: "pointer",
+        }}
+      >
+        <option value="" disabled>📂 Samples</option>
+        {sampleProjects.map((s) => (
+          <option key={s.id} value={s.id} title={s.description}>
+            {s.name}
+          </option>
+        ))}
+      </select>
       <button onClick={onSave}>Save</button>
       <ImportExportMenu />
       <button onClick={undo} title="Undo (Ctrl+Z)">↩</button>
