@@ -188,13 +188,14 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       };
     }
 
-    set({
+    set((s) => ({
+      ...pushHistory(s),
       project,
       selectedNodeId: null,
       selectedLinkId: null,
       results: new Map(),
       activeEventId: project.events[0]?.id ?? null,
-    });
+    }));
   },
 
   setResults: (eventId, results) =>
