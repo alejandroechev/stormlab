@@ -2,6 +2,8 @@
 
 A web-based stormwater modeling tool built with TypeScript, React, and SVG — runs entirely in the browser with no backend required.
 
+![StormLab Screenshot](docs/screenshot.png)
+
 ## Features
 
 ### Hydrology Engine (`@stormlab/engine`)
