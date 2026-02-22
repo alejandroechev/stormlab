@@ -103,7 +103,7 @@ html, body, #root {
   flex-shrink: 0;
 }
 
-.toolbar button {
+.toolbar button, .toolbar a.btn {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border);
@@ -112,9 +112,10 @@ html, body, #root {
   cursor: pointer;
   font-size: 12px;
   transition: all 0.15s;
+  text-decoration: none;
 }
 
-.toolbar button:hover {
+.toolbar button:hover, .toolbar a.btn:hover {
   background: var(--panel);
   color: var(--text);
   border-color: var(--text-muted);

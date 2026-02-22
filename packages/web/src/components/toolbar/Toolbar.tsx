@@ -229,7 +229,7 @@ export function Toolbar() {
       )}
 
       <div className="toolbar-spacer" />
-      <a href="https://github.com/alejandroechev/stormlab/issues/new" target="_blank" rel="noopener noreferrer" title="Report issue or give feedback">💬 Feedback</a>
+      <a className="btn" href="https://github.com/alejandroechev/stormlab/issues/new" target="_blank" rel="noopener noreferrer" title="Report issue or give feedback">💬 Feedback</a>
       <button
         onClick={() => window.open('/intro.html', '_blank')}
         title="Introduction to stormwater modeling"
