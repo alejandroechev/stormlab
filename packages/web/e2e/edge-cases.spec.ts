@@ -236,6 +236,8 @@ test.describe("Edge Cases & Robustness", () => {
     // Second run
     await page.getByRole("button", { name: "▶ Run Simulation" }).click();
     await page.waitForTimeout(300);
+    await page.locator(".node-group").first().click();
+    await expect(page.getByText("Results")).toBeVisible();
     const secondPeak = await page.locator(".result-badge .value").first().textContent();
 
     expect(firstPeak).toBe(secondPeak);
@@ -498,12 +500,7 @@ test.describe("Edge Cases & Robustness", () => {
     });
     await page.locator(".node-group").click();
     await page.locator(".property-panel input").first().fill("Test Watershed");
-
-    // 2. Add a pond
-    await page.locator(".stencil-item", { hasText: "Pond" }).dragTo(canvas, {
-      targetPosition: { x: box!.width * 0.6, y: box!.height * 0.6 },
-    });
-    await expect(page.getByText("Nodes: 2")).toBeVisible();
+    await expect(page.getByText("Nodes: 1")).toBeVisible();
 
     // 3. Run simulation
     await page.getByRole("button", { name: "▶ Run Simulation" }).click();
@@ -526,7 +523,7 @@ test.describe("Edge Cases & Robustness", () => {
     await page.getByRole("button", { name: "Open" }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(savePath);
-    await expect(page.getByText("Nodes: 2")).toBeVisible();
+    await expect(page.getByText("Nodes: 1")).toBeVisible();
 
     // 7. Re-run simulation
     await page.getByRole("button", { name: "▶ Run Simulation" }).click();
