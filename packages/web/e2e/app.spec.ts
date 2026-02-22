@@ -37,6 +37,19 @@ test.describe("StormLab E2E", () => {
     await expect(page.getByText("Nodes: 1")).toBeVisible();
   });
 
+  test("project state persists across page reload", async ({ page }) => {
+    // Add a node
+    const stencil = page.locator(".stencil-item", { hasText: "Subcatchment" });
+    const canvas = page.locator(".diagram-area svg");
+    await stencil.dragTo(canvas);
+    await expect(page.getByText("Nodes: 1")).toBeVisible();
+    // Wait for debounced save
+    await page.waitForTimeout(700);
+    // Reload and verify node persisted
+    await page.reload();
+    await expect(page.getByText("Nodes: 1")).toBeVisible();
+  });
+
   test("can drag multiple node types onto the canvas", async ({ page }) => {
     const canvas = page.locator(".diagram-area svg");
     const box = await canvas.boundingBox();

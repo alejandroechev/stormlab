@@ -85,8 +85,19 @@ function pushHistory(s: EditorState): Partial<EditorState> {
   return { history: newHistory, historyIndex: newHistory.length - 1 };
 }
 
+const STORAGE_KEY = "stormlab-project";
+
+function loadPersistedProject(): Project {
+  if (typeof window === "undefined") return emptyProject();
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved) as Project;
+  } catch { /* ignore corrupt data */ }
+  return emptyProject();
+}
+
 export const useEditorStore = create<EditorState>((set, get) => ({
-  project: emptyProject(),
+  project: loadPersistedProject(),
   selectedNodeId: null,
   selectedLinkId: null,
   linkSourceId: null,
@@ -256,3 +267,14 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   canUndo: () => get().historyIndex >= 0,
   canRedo: () => get().historyIndex + 2 < get().history.length,
 }));
+
+// Debounced auto-save project to localStorage
+let _saveTimer: ReturnType<typeof setTimeout> | undefined;
+useEditorStore.subscribe((state) => {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.project));
+    } catch { /* quota exceeded — ignore */ }
+  }, 500);
+});
