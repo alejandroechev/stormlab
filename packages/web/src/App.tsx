@@ -5,6 +5,7 @@ import { PropertyPanel } from "./components/panels/PropertyPanel";
 import { Toolbar } from "./components/toolbar/Toolbar";
 import { ComparisonPanel } from "./components/reports/ComparisonPanel";
 import { GoalSeekPanel } from "./components/panels/GoalSeekPanel";
+import { ToastContainer } from "./components/Toast";
 import { useEditorStore } from "./store/editor-store";
 import "./index.css";
 
@@ -82,6 +83,7 @@ export function App() {
           Goal-Seek
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

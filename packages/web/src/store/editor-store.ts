@@ -96,7 +96,12 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   activeEventId: null,
   history: [],
   historyIndex: -1,
-  theme: (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light") as "light" | "dark",
+  theme: (() => {
+    if (typeof window === "undefined") return "light";
+    const stored = localStorage.getItem("stormlab-theme");
+    if (stored === "dark" || stored === "light") return stored;
+    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  })() as "light" | "dark",
   baselineProject: null,
   baselineResults: new Map(),
 
@@ -211,6 +216,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set((s) => {
       const newTheme = s.theme === "light" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("stormlab-theme", newTheme);
       return { theme: newTheme };
     }),
 

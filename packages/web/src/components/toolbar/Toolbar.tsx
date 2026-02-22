@@ -9,6 +9,7 @@ import { LocationSelector } from "./LocationSelector";
 import { ImportExportMenu } from "./ImportExportMenu";
 import { trackEvent } from "../../analytics";
 import { sampleProjects } from "../../samples";
+import { showToast } from "../Toast";
 
 export function Toolbar() {
   const project = useEditorStore((s) => s.project);
@@ -20,6 +21,7 @@ export function Toolbar() {
   const redo = useEditorStore((s) => s.redo);
   const theme = useEditorStore((s) => s.theme);
   const toggleTheme = useEditorStore((s) => s.toggleTheme);
+  const selectNode = useEditorStore((s) => s.selectNode);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Apply theme on mount
@@ -45,32 +47,65 @@ export function Toolbar() {
 
   const onRun = useCallback(() => {
     if (project.events.length === 0) {
-      alert("No rainfall events defined");
+      showToast("No rainfall events defined", "warning");
       return;
     }
     if (project.nodes.length === 0) {
-      alert("No nodes in the project");
+      showToast("Add nodes to the diagram before running simulation", "warning");
+      return;
+    }
+
+    // Check for subcatchments
+    if (!project.nodes.some((n) => n.type === "subcatchment")) {
+      showToast("Add at least one Subcatchment to generate runoff", "warning");
+      return;
+    }
+
+    // Check for disconnected nodes
+    if (project.nodes.length > 1 && project.links.length === 0) {
+      showToast("Connect nodes with flow links to define the drainage network", "warning");
       return;
     }
 
     // Validate before running
     const errors = validateProject(project);
     if (errors.length > 0) {
-      alert("Validation errors:\n" + errors.map((e) => `• ${e}`).join("\n"));
+      for (const e of errors) showToast(e, "error");
       return;
     }
 
     try {
+      let firstResults: Map<string, { peakOutflow: number }> | null = null;
       for (const event of project.events) {
         const result = runSimulation(project, event.id);
         setResults(event.id, result.nodeResults);
+        if (!firstResults) firstResults = result.nodeResults;
       }
       setActiveEvent(project.events[0].id);
+
+      // Auto-select terminal node (outfall / highest accumulated flow)
+      const terminalNodes = project.nodes.filter(
+        (n) => !project.links.some((l) => l.from === n.id),
+      );
+      if (terminalNodes.length > 0 && firstResults) {
+        let bestNode = terminalNodes[0];
+        let bestFlow = 0;
+        for (const tn of terminalNodes) {
+          const r = firstResults.get(tn.id);
+          if (r && r.peakOutflow > bestFlow) {
+            bestFlow = r.peakOutflow;
+            bestNode = tn;
+          }
+        }
+        selectNode(bestNode.id);
+      }
+
+      showToast("Simulation complete", "success");
       trackEvent({ name: "run_simulation", data: { nodes: project.nodes.length, events: project.events.length } });
     } catch (err: any) {
-      alert(`Simulation error: ${err.message}`);
+      showToast(`Simulation error: ${err.message}`, "error");
     }
-  }, [project, setResults, setActiveEvent]);
+  }, [project, setResults, setActiveEvent, selectNode]);
 
   const onSave = useCallback(() => {
     const json = JSON.stringify(project, null, 2);
@@ -97,7 +132,7 @@ export function Toolbar() {
           const proj = JSON.parse(reader.result as string) as Project;
           setProject(proj);
         } catch {
-          alert("Invalid project file");
+          showToast("Invalid project file", "error");
         }
       };
       reader.readAsText(file);
@@ -193,7 +228,7 @@ export function Toolbar() {
         </select>
       )}
 
-      <div style={{ marginLeft: "auto" }} />
+      <div className="toolbar-spacer" />
       <button onClick={() => window.open('https://github.com/alejandroechev/stormlab/issues/new', '_blank')} title="Report issue or give feedback">💬 Feedback</button>
       <button
         onClick={() => window.open('/intro.html', '_blank')}

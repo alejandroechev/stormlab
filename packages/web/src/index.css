@@ -5,6 +5,7 @@
   --panel: #f0f0f0;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
+  --danger: #ef4444;
   --text: #1a1a1a;
   --text-secondary: #555;
   --text-muted: #888;
@@ -34,6 +35,7 @@
   --panel: #222;
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
+  --danger: #f87171;
   --text: #e5e5e5;
   --text-secondary: #aaa;
   --text-muted: #666;
@@ -98,6 +100,7 @@ html, body, #root {
   color: var(--text);
   margin-right: 16px;
   letter-spacing: -0.02em;
+  flex-shrink: 0;
 }
 
 .toolbar button {
@@ -128,14 +131,19 @@ html, body, #root {
 }
 
 .btn-danger {
-  background: transparent !important;
-  color: #dc2626 !important;
-  border-color: #dc2626 !important;
+  margin-top: 12px;
+  width: 100%;
+  padding: 6px;
+  background: var(--danger) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 .btn-danger:hover {
-  background: #dc2626 !important;
-  color: #fff !important;
+  opacity: 0.9;
 }
 
 .theme-toggle {
@@ -444,4 +452,40 @@ html, body, #root {
   color: var(--text);
   border: none;
   font-size: 11px;
+}
+
+/* ──────────────── Toolbar Spacer ──────────────── */
+.toolbar-spacer {
+  flex: 1;
+}
+
+/* ──────────────── Toast Notifications ──────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 40px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+}
+
+.toast {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: toast-in 0.25s ease-out;
+}
+
+.toast-success { background: #16a34a; }
+.toast-error { background: #dc2626; }
+.toast-warning { background: #d97706; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }

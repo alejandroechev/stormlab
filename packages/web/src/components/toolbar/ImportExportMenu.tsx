@@ -17,6 +17,7 @@ import {
   importHydroCAD,
   exportHydroCAD,
 } from "@stormlab/engine";
+import { showToast } from "../Toast";
 
 const formats = [
   { id: "csv-sub", label: "CSV — Subcatchments", ext: ".csv", hasImport: true, hasExport: true },
@@ -65,7 +66,7 @@ export function ImportExportMenu() {
         }
         setOpen(false);
       } catch (err: any) {
-        alert(`Import error: ${err.message}`);
+        showToast(`Import error: ${err.message}`, "error");
       }
     },
     [project, setProject, addNode],

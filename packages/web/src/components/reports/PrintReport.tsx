@@ -5,6 +5,7 @@ import { useEditorStore } from "../../store/editor-store";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer,
 } from "recharts";
+import { showToast } from "../Toast";
 
 function generateReportHTML(): string {
   const state = useEditorStore.getState();
@@ -24,7 +25,7 @@ export function openPrintReport() {
   const { project, results, activeEventId } = state;
 
   if (!activeEventId || !results.get(activeEventId)) {
-    alert("Run a simulation first before generating a report.");
+    showToast("Run a simulation first before generating a report.", "warning");
     return;
   }
 

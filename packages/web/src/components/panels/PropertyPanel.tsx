@@ -374,11 +374,9 @@ export function PropertyPanel() {
 
       <NodeResultBadges nodeId={selectedNode.id} />
 
-      <div style={{ marginTop: 16 }}>
-        <button className="btn-danger" onClick={() => removeNode(selectedNode.id)}>
-          Delete Node
-        </button>
-      </div>
+      <button className="btn-danger" onClick={() => removeNode(selectedNode.id)}>
+        Delete Node
+      </button>
     </div>
   );
 }
