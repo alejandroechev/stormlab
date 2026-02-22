@@ -7,7 +7,6 @@ import { runSimulation, validateProject, type Project } from "@stormlab/engine";
 import { openPrintReport } from "../reports/PrintReport";
 import { LocationSelector } from "./LocationSelector";
 import { ImportExportMenu } from "./ImportExportMenu";
-import { FeedbackButton } from "./FeedbackButton";
 import { trackEvent } from "../../analytics";
 import { sampleProjects } from "../../samples";
 
@@ -195,7 +194,7 @@ export function Toolbar() {
       )}
 
       <div style={{ marginLeft: "auto" }} />
-      <FeedbackButton />
+      <button onClick={() => window.open('https://github.com/alejandroechev/stormlab/issues/new', '_blank')} title="Report issue or give feedback">💬 Feedback</button>
       <button
         onClick={() => window.open('/intro.html', '_blank')}
         title="Introduction to stormwater modeling"
