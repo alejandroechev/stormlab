@@ -8,7 +8,7 @@
 
 **Body:**
 
-Hey everyone — I'm a developer who got tired of seeing engineers pay $2,000+/yr for stormwater software with 1990s interfaces. So I built StormLab, a free browser-based alternative.
+I built StormLab, a free browser-based stormwater modeling tool.
 
 It does TR-55 hydrology (SCS runoff, curve numbers, Type I/IA/II/III distributions), unit hydrographs, and Modified Puls pond routing. You build your watershed as a visual DAG — subcatchments, ponds, reaches, junctions — and it solves the whole system.
 
