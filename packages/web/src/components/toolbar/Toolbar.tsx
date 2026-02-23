@@ -1,7 +1,7 @@
 /**
  * Toolbar — project actions (run, save, load, new, undo, redo).
  */
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 import { useEditorStore } from "../../store/editor-store";
 import { runSimulation, validateProject, type Project } from "@stormlab/engine";
 import { openPrintReport } from "../reports/PrintReport";
@@ -10,8 +10,10 @@ import { ImportExportMenu } from "./ImportExportMenu";
 import { trackEvent } from "../../analytics";
 import { sampleProjects } from "../../samples";
 import { showToast } from "../Toast";
+import { FeedbackModal } from "../FeedbackModal";
 
 export function Toolbar() {
+  const [showFeedback, setShowFeedback] = useState(false);
   const project = useEditorStore((s) => s.project);
   const setProject = useEditorStore((s) => s.setProject);
   const setResults = useEditorStore((s) => s.setResults);
@@ -229,7 +231,8 @@ export function Toolbar() {
       )}
 
       <div className="toolbar-spacer" />
-      <a className="btn" href="https://github.com/alejandroechev/stormlab/issues/new" target="_blank" rel="noopener noreferrer" title="Report issue or give feedback">💬 Feedback</a>
+      <button onClick={() => setShowFeedback(true)} title="Send feedback">💬 Feedback</button>
+      <a className="github-link" href="https://github.com/alejandroechev/stormlab" target="_blank" rel="noopener noreferrer">GitHub</a>
       <button
         onClick={() => window.open('/intro.html', '_blank')}
         title="Introduction to stormwater modeling"
@@ -251,6 +254,7 @@ export function Toolbar() {
         style={{ display: "none" }}
         onChange={onFileChange}
       />
+      {showFeedback && <FeedbackModal product="StormLab" onClose={() => setShowFeedback(false)} />}
     </div>
   );
 }

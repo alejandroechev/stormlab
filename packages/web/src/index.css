@@ -490,3 +490,38 @@ html, body, #root {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Feedback modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex;
+  align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-content {
+  background: var(--surface, #fff); border-radius: 12px; padding: 24px;
+  max-width: 480px; width: 90%; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2); color: var(--text, #212529);
+}
+.modal-content h3 { margin: 0 0 16px; font-size: 18px; }
+.modal-content label { display: block; font-size: 13px; font-weight: 500; margin: 12px 0 4px; color: var(--text2, #6c757d); }
+.modal-content textarea, .modal-content input, .modal-content select {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border, #dee2e6);
+  border-radius: 6px; font-size: 13px; background: var(--bg, #f8f9fa);
+  color: var(--text, #212529); font-family: inherit; box-sizing: border-box;
+}
+.modal-content textarea:focus, .modal-content input:focus, .modal-content select:focus {
+  outline: none; border-color: var(--accent, #0d6efd);
+}
+.radio-group { display: flex; gap: 8px; }
+.radio-group label {
+  padding: 6px 12px; border: 1px solid var(--border, #dee2e6); border-radius: 6px;
+  cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 4px;
+  margin: 0; color: var(--text, #212529);
+}
+.radio-group label.active { border-color: var(--accent, #0d6efd); background: color-mix(in srgb, var(--accent, #0d6efd) 10%, transparent); }
+.radio-group input { display: none; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.modal-actions button { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-size: 13px; background: var(--surface); color: var(--text); }
+.modal-actions .btn-primary { background: var(--accent, #0d6efd); color: #fff; border-color: var(--accent, #0d6efd); }
+.modal-actions .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.github-link { font-size: 11px; color: var(--text2, #6c757d); text-decoration: none; padding: 0 4px; }
+.github-link:hover { text-decoration: underline; }
