@@ -480,11 +480,11 @@ test.describe("Edge Cases & Robustness", () => {
   // --- Feedback button ---
 
   test("feedback button is visible and accessible", async ({ page }) => {
-    const feedbackBtn = page.locator("text=💬 Feedback");
+    const feedbackBtn = page.getByRole("button", { name: "💬 Feedback" });
     await expect(feedbackBtn).toBeVisible();
-    // Should be a link
-    const href = await feedbackBtn.getAttribute("href");
-    expect(href).toBeTruthy();
+    // Clicking opens the feedback modal
+    await feedbackBtn.click();
+    await expect(page.locator("text=Send Feedback")).toBeVisible();
     await page.screenshot({ path: path.join(SCREENSHOTS_DIR, "feedback-button.png") });
   });
 
