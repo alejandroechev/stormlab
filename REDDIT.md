@@ -48,9 +48,10 @@ Would love to hear from hydrologists — what's missing? What would make you act
 
 I've been building a suite of free, open-source engineering tools that run entirely in the browser. The latest is StormLab — a stormwater modeling tool that does TR-55 hydrology and pond routing with a drag-and-drop diagram editor.
 
-The goal: replace $2K+/yr desktop software with modern web apps that anyone can use for free. No login, no install, no data leaves your browser.
+The goal is to provide modern browser-based tools that are free and easy to use. No login, no install, no data leaves your browser.
 
 🔗 https://storm-lab.vercel.app
 📂 https://github.com/alejandroechev/hydro-cad-clone
 
 Feedback welcome — especially on what features civil/water resources engineers need most.
+
